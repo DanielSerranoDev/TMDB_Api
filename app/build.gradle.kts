@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -66,4 +68,27 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.compose.material:material-icons-extended:1.7.0-beta01")
+
+
+    // Networking
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
+    implementation ("com.squareup.moshi:moshi:1.14.0")
+
+    // Dagger Hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("androidx.room:room-compiler:2.4.3")
+    kapt("com.google.dagger:hilt-compiler:2.48")
+
+    //Gson
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+    // Async Image
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+
 }
