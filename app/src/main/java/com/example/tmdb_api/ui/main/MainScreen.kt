@@ -1,12 +1,8 @@
 package com.example.tmdb_api.ui.main
 
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -23,8 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,19 +26,23 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.tmdb_api.R
+import com.example.tmdb_api.ui.main.Home.HomeScreen
+import com.example.tmdb_api.ui.main.Home.HomeViewModel
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    navController: NavController
 ) {
 
     Scaffold(
-        topBar = { Topbar() },
+        topBar = { TopBar() },
 
         content = { paddingValues ->
-            Content(paddingValues = paddingValues, homeViewModel = viewModel)
+            Content(paddingValues = paddingValues, homeViewModel = viewModel, navController)
         },
         bottomBar = { BottomBar() }
     )
@@ -53,7 +51,7 @@ fun MainScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Topbar() {
+fun TopBar() {
     TopAppBar(
         title = { Text(text = "TMDB_API", fontSize = 30.sp, color = Color.White) },
         colors = TopAppBarDefaults.topAppBarColors(
@@ -66,10 +64,10 @@ fun Topbar() {
 
 
 @Composable
-fun Content(paddingValues: PaddingValues, homeViewModel: HomeViewModel) {
+fun Content(paddingValues: PaddingValues, homeViewModel: HomeViewModel, navController: NavController) {
 
     Box(modifier = Modifier.padding(paddingValues)) {
-        HomeScreen(homeViewModel)
+        HomeScreen(homeViewModel, navController)
     }
 
 }

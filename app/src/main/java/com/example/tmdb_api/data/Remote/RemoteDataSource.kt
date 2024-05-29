@@ -27,4 +27,11 @@ class RemoteDataSource@Inject constructor(private val api: Tmdb_Api) {
         return response
     }
 
+    suspend fun getShowById(id: String): Show {
+        val responseApi = api.getShowDetails(id)
+        Log.w("TAG", "getShowById: $responseApi")
+
+        return responseApi
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.example.tmdb_api.ui.main
+package com.example.tmdb_api.ui.main.Detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,34 +14,30 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class DetailViewModel @Inject constructor(
     private val repository: Repository
 ): ViewModel() {
 
-    private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Idle)
-    val state: StateFlow<HomeState> = _state.asStateFlow()
+    private val _state: MutableStateFlow<DetailState> = MutableStateFlow(DetailState.Idle)
+    val state: StateFlow<DetailState> = _state.asStateFlow()
 
-    fun getRespositoryData(){
+    fun getDetail(id: String) {
 
         viewModelScope.launch {
-            _state.update { HomeState.Idle }
+            _state.update { DetailState.Idle }
 
-            val user = runCatching {
+            val show = runCatching {
                 withContext(Dispatchers.IO) {
-
-                    repository.repositoryResponse()
-
+                    repository.getShowsById(id)
                 }
             }
-            if (user.isSuccess) {
-                _state.update { HomeState.Success(user.getOrThrow()) }
+            if(show.isSuccess){
+                _state.update { DetailState.Success(show.getOrThrow()) }
             } else {
-                _state.update { HomeState.Error(user.exceptionOrNull()?.message.orEmpty()) }
-            }
+                _state.update { DetailState.Error(show.exceptionOrNull()?.message.orEmpty()) }
+                }
+
         }
     }
-
-
-
 
 }

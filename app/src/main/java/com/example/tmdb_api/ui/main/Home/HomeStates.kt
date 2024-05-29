@@ -1,7 +1,6 @@
-package com.example.tmdb_api.ui.main
+package com.example.tmdb_api.ui.main.Home
 
 import com.example.tmdb_api.data.Remote.ResponseRepository
-import com.example.tmdb_api.domain.models.Show
 
 
 sealed class HomeState {
