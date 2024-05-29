@@ -17,14 +17,20 @@ class LocalDataSource @Inject constructor(private val dao: ShowDAO): LocalDataSo
         return dao.updateShows(shows)
     }
 
-
-    override fun updateStatusFavourite(id: Int, isFavourite: Boolean) {
+    override fun updateStatusFavourite(id: String, isFavourite: Boolean) {
         return dao.updateFavourite(id, isFavourite)
     }
+    override fun getShowByGenre(genre: String): List<ResponseLocalUI> {
+        return dao.getShowsByGenre(genre)
+    }
 
-    override fun getStatusFavourites(id: Int): Boolean {
+
+    override fun getStatusFavourites(id: String): Boolean {
         return dao.getShowStatusFavourite(id)
     }
 
+    override fun getShowById(id: String): ResponseLocalUI {
+        return dao.getShowById(id)
+    }
 
 }

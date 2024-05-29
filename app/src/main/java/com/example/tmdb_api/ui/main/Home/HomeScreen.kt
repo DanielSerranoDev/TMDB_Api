@@ -163,7 +163,10 @@ fun HomeScreenComponents(
                                 contentDescription = "Film image",
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .background(colorResource(id = R.color.black)),
+                                    .background(colorResource(id = R.color.black))
+                                    .clickable {
+                                        navController.navigate("detail/${it.id}")
+                                    },
                                 contentScale = ContentScale.Crop,
                             )
                             RatingFloatingButton(
@@ -207,7 +210,10 @@ fun HomeScreenComponents(
                                 contentDescription = "Film image",
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .background(colorResource(id = R.color.black)),
+                                    .background(colorResource(id = R.color.black))
+                                    .clickable {
+                                        navController.navigate("detail/${it.id}")
+                                    },
                                 contentScale = ContentScale.Crop,
                             )
                             RatingFloatingButton(

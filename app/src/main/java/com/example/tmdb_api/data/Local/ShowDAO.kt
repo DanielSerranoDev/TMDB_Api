@@ -24,11 +24,22 @@ interface ShowDAO {
     @Query("DELETE FROM showDB")
     fun deleteAll()
 
+    //Peliculas por su genero
+    @Query("SELECT * FROM showDB WHERE genres LIKE '%' || :genre || '%'")
+    fun getShowsByGenre(genre: String): List<ResponseLocalUI>
+
+
+    //Consulta por Id
+
+    @Query("SELECT * FROM showDB WHERE id = :id")
+    fun getShowById(id: String): ResponseLocalUI
+
+    //Favorite
     @Query("UPDATE showDB SET isFavourite = :isFavourite WHERE id = :id")
-    fun updateFavourite(id: Int, isFavourite: Boolean)
+    fun updateFavourite(id: String, isFavourite: Boolean)
 
 
     @Query("SELECT isFavourite FROM showDB WHERE id = :id")
-    fun getShowStatusFavourite(id: Int): Boolean
+    fun getShowStatusFavourite(id: String): Boolean
 
 }

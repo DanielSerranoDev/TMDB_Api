@@ -21,4 +21,4 @@ data class ResponseLocalUI (
     @ColumnInfo(name = "streamingOptions")val streamingOptions: StreamingOptions?,
     @ColumnInfo(name = "seasonCount")val seasonCount: Long? = null,
     @ColumnInfo(name = "isFavourite") val isFavourite: Boolean = false
-)
+) 

@@ -230,13 +230,13 @@ fun DetailComponents(
                         OutlinedButton(
                             onClick = { /*TODO*/ },
                             modifier = Modifier
-                                .padding(1.dp) // Ajusta el padding entre botones si es necesario
-                                .height(28.dp) // Ajusta la altura del botón
+                                .padding(1.dp) 
+                                .height(28.dp)
                         ) {
                             Text(
                                 text = castMember,
-                                fontSize = 12.sp, // Ajusta el tamaño del texto
-                                modifier = Modifier.padding(horizontal = 8.dp) // Ajusta el padding dentro del botón
+                                fontSize = 12.sp,
+                                modifier = Modifier.padding(horizontal = 8.dp)
                             )
                         }
                     }

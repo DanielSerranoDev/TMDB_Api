@@ -87,12 +87,14 @@ dependencies {
     // Async Image
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-    // Room
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.7")
+//ROOM
+    implementation ("androidx.room:room-runtime:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1")
+    implementation ("androidx.room:room-ktx:2.6.1")
+    implementation ("androidx.room:room-paging:2.6.1")
 
+// Paging 3.0
+    implementation ("androidx.paging:paging-compose:1.0.0-alpha15")
 
     // Test
     testImplementation(libs.junit)
