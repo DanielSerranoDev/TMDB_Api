@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTimeFilled
-import androidx.compose.material.icons.filled.Bookmarks
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,6 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +34,7 @@ import androidx.navigation.NavController
 import com.example.tmdb_api.R
 import com.example.tmdb_api.ui.main.Home.HomeScreen
 import com.example.tmdb_api.ui.main.Home.HomeViewModel
+import com.example.tmdb_api.ui.main.Favorites.FavoritesShowsScreen
 
 @Composable
 fun MainScreen(
@@ -37,14 +42,23 @@ fun MainScreen(
     viewModel: HomeViewModel,
     navController: NavController
 ) {
+    var selectedScreen by remember { mutableStateOf("HomeScreen") }
 
     Scaffold(
         topBar = { TopBar() },
 
         content = { paddingValues ->
-            Content(paddingValues = paddingValues, homeViewModel = viewModel, navController)
+
+            Content(
+                paddingValues = paddingValues,
+                homeViewModel = viewModel,
+                navController,
+                selectedScreen
+            )
+
+
         },
-        bottomBar = { BottomBar() }
+        bottomBar = { BottomBar() { screen -> selectedScreen = screen } }
     )
 
 }
@@ -64,16 +78,33 @@ fun TopBar() {
 
 
 @Composable
-fun Content(paddingValues: PaddingValues, homeViewModel: HomeViewModel, navController: NavController) {
+fun Content(
+    paddingValues: PaddingValues,
+    homeViewModel: HomeViewModel,
+    navController: NavController,
+    selectedScreen: String
+) {
 
     Box(modifier = Modifier.padding(paddingValues)) {
-        HomeScreen(homeViewModel, navController)
+
+        when (selectedScreen) {
+
+            "HomeScreen" -> HomeScreen(homeViewModel, navController)
+            "NewShowsScreen" -> FavoritesShowsScreen()
+            "FavoritesShowsScreen" -> FavoritesShowsScreen()
+            "SettingsScreen" -> FavoritesShowsScreen()
+
+        }
     }
+
 
 }
 
+
 @Composable
-fun BottomBar() {
+fun BottomBar(
+    onScreenSelected: (String) -> Unit
+) {
     BottomAppBar(
         containerColor = colorResource(id = R.color.backgroundBars),
         contentColor = Color.White
@@ -81,7 +112,7 @@ fun BottomBar() {
     ) {
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
+            onClick = { onScreenSelected("HomeScreen") },
             icon = {
                 Column(
                     modifier = Modifier,
@@ -100,7 +131,7 @@ fun BottomBar() {
             })
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
+            onClick = { onScreenSelected("NewShowsScreen")},
             icon = {
                 Column(
                     modifier = Modifier,
@@ -118,7 +149,7 @@ fun BottomBar() {
             })
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
+            onClick = { onScreenSelected("FavoritesShowsScreen")},
             icon = {
                 Column(
                     modifier = Modifier,
@@ -126,17 +157,17 @@ fun BottomBar() {
                 ) {
 
                     Icon(
-                        imageVector = Icons.Default.LocalFireDepartment,
+                        imageVector = Icons.Default.Favorite,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
 
                     )
-                    Text(text = "Popular")
+                    Text(text = "Favorites")
                 }
             })
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
+            onClick = { onScreenSelected("SettingsScreen")},
             icon = {
                 Column(
                     modifier = Modifier,
@@ -144,12 +175,12 @@ fun BottomBar() {
                 ) {
 
                     Icon(
-                        imageVector = Icons.Default.Bookmarks,
+                        imageVector = Icons.Default.Settings,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
 
                     )
-                    Text(text = "List")
+                    Text(text = "Settings")
                 }
             })
 

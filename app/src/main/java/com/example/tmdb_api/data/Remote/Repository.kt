@@ -9,10 +9,16 @@ import com.example.tmdb_api.data.mappers.ResponseRemoteUIToLocalUIMapper
 import com.example.tmdb_api.domain.models.ResponseRemoteUI
 import javax.inject.Inject
 
-data class ResponseRepository(
+data class ResponseRepositoryByGender(
     val sciFiMovies: List<ResponseRemoteUI>,
     val comedySeries: List<ResponseRemoteUI>,
     val actionMovies: List<ResponseRemoteUI>,
+)
+
+data class ResponseRepositoryByCatalog(
+    val netflixRatings: List<ResponseRemoteUI>,
+    val amazonPrimeRatings: List<ResponseRemoteUI>,
+    val hboMaxRatings: List<ResponseRemoteUI>,
 )
 
 class Repository @Inject constructor(
@@ -24,55 +30,131 @@ class Repository @Inject constructor(
     private val localDataSourceInterface: LocalDataSourceInterface
 ) {
 
-    private suspend fun getSciFiMovies(): List<ResponseRemoteUI> {
+    private suspend fun getNetflixRatings(): List<ResponseRemoteUI> {
         try {
+            Log.d("Repository", "Fetching movies/series...")
+            val responseRemote = remoteDataSource.getNetflixRatings()
+            Log.d("Repository", "Movies/Series fetched successfully")
+            Log.w("Repository", responseRemote.toString())
+            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
+            /*
+            //Convert to local UI
+            val convertRemoteUIToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertResponseToRemoteUI)
 
-            val responseLocal = localDataSourceInterface.getShowByGenre("scifi")
+            //Consultar DB
+            val localData = localDataSourceInterface.getAllShows()
 
-            return if (responseLocal.isNotEmpty()) {
-                 val responseLocal = responseLocalUIToRemoteUIMapper.mapShowList(responseLocal)
-                Log.w("Repository Local", responseLocal.toString())
-                responseLocal
-            }else{
-                Log.d("Repository", "Fetching movies...")
-                val responseRemote = remoteDataSource.getSciFiMovies()
-                Log.d("Repository", "Movies fetched successfully")
-                Log.w("Repository", responseRemote.toString())
-                val convertToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
-                //Convert to local UI
-                val convertToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertToRemoteUI)
+            if (localData.isEmpty()) {
                 //Save to DB
-                localDataSourceInterface.insertAllShows(convertToLocalClass)
-                convertToRemoteUI
+                localDataSourceInterface.insertAllShows(convertRemoteUIToLocalClass)
             }
-
+             */
+            return convertResponseToRemoteUI
         } catch (e: Exception) {
             Log.e("Repository", "Error fetching movies", e)
             return emptyList() // Or handle the error as needed
         }
     }
 
-    private suspend fun getComedySeries(): List<ResponseRemoteUI>{
+    private suspend fun getAmazonPrimeRatings(): List<ResponseRemoteUI> {
+        try {
+            Log.d("Repository", "Fetching movies/series...")
+            val responseRemote = remoteDataSource.getAmazonPrimeRatings()
+            Log.d("Repository", "Movies/Series fetched successfully")
+            Log.w("Repository", responseRemote.toString())
+            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
+            /*
+            //Convert to local UI
+            val convertRemoteUIToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertResponseToRemoteUI)
+
+            //Consultar DB
+            val localData = localDataSourceInterface.getAllShows()
+
+            if (localData.isEmpty()) {
+                //Save to DB
+                localDataSourceInterface.insertAllShows(convertRemoteUIToLocalClass)
+            }
+             */
+            return convertResponseToRemoteUI
+        } catch (e: Exception) {
+            Log.e("Repository", "Error fetching movies", e)
+            return emptyList() // Or handle the error as needed
+        }
+    }
+
+    private suspend fun getHboMaxRatings(): List<ResponseRemoteUI> {
+        try {
+            Log.d("Repository", "Fetching movies/series...")
+            val responseRemote = remoteDataSource.getHboMaxRatings()
+            Log.d("Repository", "Movies/Series fetched successfully")
+            Log.w("Repository", responseRemote.toString())
+            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
+            /*
+            //Convert to local UI
+            val convertRemoteUIToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertResponseToRemoteUI)
+
+            //Consultar DB
+            val localData = localDataSourceInterface.getAllShows()
+
+            if (localData.isEmpty()) {
+                //Save to DB
+                localDataSourceInterface.insertAllShows(convertRemoteUIToLocalClass)
+            }
+             */
+            return convertResponseToRemoteUI
+        } catch (e: Exception) {
+            Log.e("Repository", "Error fetching movies", e)
+            return emptyList() // Or handle the error as needed
+        }
+    }
+
+    /*
+    private suspend fun getSciFiMovies(): List<ResponseRemoteUI> {
         try {
 
-            val responseLocal = localDataSourceInterface.getShowByGenre("comedy")
+            Log.d("Repository", "Fetching movies...")
+            val responseRemote = remoteDataSource.getSciFiMovies()
+            Log.d("Repository", "Movies fetched successfully")
+            Log.w("Repository", responseRemote.toString())
+            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
+            /*
+            //Convert to local UI
+            val convertRemoteUIToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertResponseToRemoteUI)
+            //Consultar DB
+            val localData = localDataSourceInterface.getAllShows()
 
-            return if (responseLocal.isNotEmpty()) {
-                val responseLocal = responseLocalUIToRemoteUIMapper.mapShowList(responseLocal)
-                Log.w("Repository Local", responseLocal.toString())
-                responseLocal
-            }else{
-                Log.d("Repository", "Fetching movies...")
-                val responseRemote = remoteDataSource.getComedySeries()
-                Log.d("Repository", "Movies fetched successfully")
-                Log.w("Repository", responseRemote.toString())
-                val convertToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
-                //Convert to local UI
-                val convertToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertToRemoteUI)
+            if (localData.isEmpty()) {
                 //Save to DB
-                localDataSourceInterface.insertAllShows(convertToLocalClass)
-                convertToRemoteUI
+                localDataSourceInterface.insertAllShows(convertRemoteUIToLocalClass)
             }
+             */
+            return convertResponseToRemoteUI
+        } catch (e: Exception) {
+            Log.e("Repository", "Error fetching movies", e)
+            return emptyList() // Or handle the error as needed
+        }
+    }
+
+    private suspend fun getComedySeries(): List<ResponseRemoteUI> {
+        try {
+
+            Log.d("Repository", "Fetching movies...")
+            val responseRemote = remoteDataSource.getComedySeries()
+            Log.d("Repository", "Movies fetched successfully")
+            Log.w("Repository", responseRemote.toString())
+            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
+            /*
+            //Convert to local UI
+            val convertRemoteUIToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertResponseToRemoteUI)
+            //Consultar DB
+            val localData = localDataSourceInterface.getAllShows()
+            if (localData.isEmpty()) {
+                //Save to DB
+                localDataSourceInterface.insertAllShows(convertRemoteUIToLocalClass)
+            }
+             */
+            return convertResponseToRemoteUI
+
 
         } catch (e: Exception) {
             Log.e("Repository", "Error fetching movies", e)
@@ -83,24 +165,22 @@ class Repository @Inject constructor(
     private suspend fun getActionMovies(): List<ResponseRemoteUI> {
         try {
 
-            val responseLocal = localDataSourceInterface.getShowByGenre("action")
-
-            return if (responseLocal.isNotEmpty()) {
-                val responseLocal = responseLocalUIToRemoteUIMapper.mapShowList(responseLocal)
-                Log.w("Repository Local", responseLocal.toString())
-                responseLocal
-            }else{
-                Log.d("Repository", "Fetching movies...")
-                val responseRemote = remoteDataSource.getActionMovies()
-                Log.d("Repository", "Movies fetched successfully")
-                Log.w("Repository", responseRemote.toString())
-                val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
-                //Convert to local UI
-                val convertRemoteUIToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertResponseToRemoteUI)
+            Log.d("Repository", "Fetching movies...")
+            val responseRemote = remoteDataSource.getActionMovies()
+            Log.d("Repository", "Movies fetched successfully")
+            Log.w("Repository", responseRemote.toString())
+            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
+            //Convert to local UI
+            val convertRemoteUIToLocalClass = responseRemoteUIToLocalUIMapper.mapShowList(convertResponseToRemoteUI)
+            /*
+            //Consultar DB
+            val localData = localDataSourceInterface.getAllShows()
+            if (localData.isEmpty()) {
                 //Save to DB
                 localDataSourceInterface.insertAllShows(convertRemoteUIToLocalClass)
-                convertResponseToRemoteUI
             }
+             */
+            return convertResponseToRemoteUI
 
         } catch (e: Exception) {
             Log.e("Repository", "Error fetching movies", e)
@@ -108,27 +188,38 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun repositoryResponse(): ResponseRepository{
-        val scifiMovies = getSciFiMovies()
-        val comedySeries = getComedySeries()
-        val actionMovies = getActionMovies()
 
-        return ResponseRepository(scifiMovies , comedySeries, actionMovies)
+     */
+    suspend fun getNewChange(): List<ResponseRemoteUI>{
+        val responseRemote = remoteDataSource.getNewChange().toList()
+        Log.d("Repository", "Movies/Series fetched successfully")
+        Log.w("Repository", responseRemote.toString())
+        return responseRemoteListToUIListMapper.map(responseRemote)
+    }
+
+    suspend fun repositoryResponseByCatalog(): ResponseRepositoryByCatalog {
+
+        val netflixRatings = getNetflixRatings()
+        val amazonPrimeRatings = getAmazonPrimeRatings()
+        val hboMaxRatings = getHboMaxRatings()
+
+        return ResponseRepositoryByCatalog(netflixRatings, amazonPrimeRatings, hboMaxRatings)
     }
 
     suspend fun getShowsById(id: String): ResponseRemoteUI? {
         try {
             //Consulta DB
             val responseLocal = localDataSourceInterface.getShowById(id)
-            Log.w("Repository Local", responseLocal.toString())
+            Log.w("Repository Local", "id: $id")
 
             //Devuelve dependiendo si la base de datos esta vacia
-            return if(responseLocal != null){
-
-                val convertToLocalToRemoteUI = responseLocalUIToRemoteUIMapper.mapShow(responseLocal)
+            return if (responseLocal != null) {
+                Log.w("Repository Local", "Hay datos en DB: $responseLocal.toString()")
+                val convertToLocalToRemoteUI =
+                    responseLocalUIToRemoteUIMapper.mapShow(responseLocal)
 
                 convertToLocalToRemoteUI
-            }else {
+            } else {
                 Log.d("Repository", "Fetching Series...")
                 val responseRemote = remoteDataSource.getShowById(id)
                 Log.d("Repository", "Series fetched successfully")

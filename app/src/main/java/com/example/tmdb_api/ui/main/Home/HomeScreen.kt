@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,11 +46,11 @@ fun HomeScreen(
     when (state) {
         is HomeState.Success -> {
             val responseRepository = (state as HomeState.Success).data
-            var movies = responseRepository.sciFiMovies
-            var series = responseRepository.comedySeries
-            var moviesAction = responseRepository.actionMovies
+            var netflixRating = responseRepository.netflixRatings
+            var amazonPrimeRating = responseRepository.amazonPrimeRatings
+            var hboMaxRating = responseRepository.hboMaxRatings
 
-            HomeScreenComponents(movies, series, moviesAction, navController)
+            HomeScreenComponents(netflixRating, amazonPrimeRating, hboMaxRating, navController)
 
         }
 
@@ -75,9 +77,9 @@ fun HomeScreenComponents(
     val sizeBoxWidth = 190.dp
     val sizeBoxHeight = 250.dp
     //
-    //FloatingActionButton
+    //FloatingActionButton Ratings
     val sizeWidth = 45
-    val sizeHeight = 20
+    val sizeHeight = 22
     val paddingStart = 8
     val paddingBottom = 8
     val fontSize = 14
@@ -90,11 +92,12 @@ fun HomeScreenComponents(
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             //First item
             item {
-                Text(
-                    text = "Peliculas de Sci-Fi",
-                    fontSize = 20.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(16.dp, 0.dp)
+                Image(
+                    painter = painterResource(id = R.drawable.netflix),
+                    contentDescription = "Netflix",
+                    modifier = Modifier
+                        .clickable {  }
+                        .size(128.dp, 64.dp)
                 )
 
                 LazyRow(modifier = Modifier.padding(8.dp)) {
@@ -138,11 +141,12 @@ fun HomeScreenComponents(
             }
             //Second item
             item {
-                Text(
-                    text = "Series de Comedia",
-                    fontSize = 20.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(16.dp, 0.dp)
+                Image(
+                    painter = painterResource(id = R.drawable.amazon),
+                    contentDescription = "Amazon",
+                    modifier = Modifier
+                        .clickable {  }
+                        .size(128.dp, 64.dp)
                 )
 
                 LazyRow(modifier = Modifier.padding(8.dp)) {
@@ -185,11 +189,13 @@ fun HomeScreenComponents(
             }
             //First third
             item {
-                Text(
-                    text = "Peliculas de Accion",
-                    fontSize = 20.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(16.dp, 0.dp)
+                Image(
+                    painter = painterResource(id = R.drawable.hbologo),
+                    contentDescription = "HboMax",
+                    modifier = Modifier
+                        .clickable {  }
+                        .size(100.dp, 64.dp)
+                        .padding(38.dp, 8.dp,0.dp,0.dp)
                 )
 
                 LazyRow(modifier = Modifier.padding(8.dp)) {
