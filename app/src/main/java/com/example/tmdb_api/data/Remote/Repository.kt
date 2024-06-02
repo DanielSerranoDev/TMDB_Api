@@ -192,7 +192,7 @@ class Repository @Inject constructor(
      */
     suspend fun getNewChange(): List<ResponseRemoteUI>{
         val responseRemote = remoteDataSource.getNewChange().toList()
-        Log.d("Repository", "Movies/Series fetched successfully")
+        Log.d("Repository", "Movies/Series updated fetched successfully")
         Log.w("Repository", responseRemote.toString())
         return responseRemoteListToUIListMapper.map(responseRemote)
     }

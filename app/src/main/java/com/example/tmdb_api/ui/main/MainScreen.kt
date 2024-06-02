@@ -1,5 +1,6 @@
 package com.example.tmdb_api.ui.main
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,11 +36,14 @@ import com.example.tmdb_api.R
 import com.example.tmdb_api.ui.main.Home.HomeScreen
 import com.example.tmdb_api.ui.main.Home.HomeViewModel
 import com.example.tmdb_api.ui.main.Favorites.FavoritesShowsScreen
+import com.example.tmdb_api.ui.main.NewShows.NewShowsScreen
+import com.example.tmdb_api.ui.main.NewShows.NewShowsViewModel
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel,
+    homeViewModel: HomeViewModel,
+    newShowsViewModel: NewShowsViewModel,
     navController: NavController
 ) {
     var selectedScreen by remember { mutableStateOf("HomeScreen") }
@@ -51,7 +55,8 @@ fun MainScreen(
 
             Content(
                 paddingValues = paddingValues,
-                homeViewModel = viewModel,
+                homeViewModel = homeViewModel,
+                newShowsViewModel = newShowsViewModel,
                 navController,
                 selectedScreen
             )
@@ -81,6 +86,7 @@ fun TopBar() {
 fun Content(
     paddingValues: PaddingValues,
     homeViewModel: HomeViewModel,
+    newShowsViewModel: NewShowsViewModel,
     navController: NavController,
     selectedScreen: String
 ) {
@@ -89,8 +95,17 @@ fun Content(
 
         when (selectedScreen) {
 
-            "HomeScreen" -> HomeScreen(homeViewModel, navController)
-            "NewShowsScreen" -> FavoritesShowsScreen()
+            "HomeScreen" -> {
+                HomeScreen(homeViewModel, navController)
+                homeViewModel.getRepositoryData()
+
+            }
+            "NewShowsScreen" -> {
+                NewShowsScreen(
+                    newShowsViewModel, navController)
+                newShowsViewModel.getRepositoryData()
+                Log.w("Repository", "NewShowsScreen")
+            }
             "FavoritesShowsScreen" -> FavoritesShowsScreen()
             "SettingsScreen" -> FavoritesShowsScreen()
 

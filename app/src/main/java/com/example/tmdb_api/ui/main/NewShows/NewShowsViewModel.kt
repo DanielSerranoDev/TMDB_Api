@@ -1,5 +1,6 @@
 package com.example.tmdb_api.ui.main.NewShows
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tmdb_api.data.Remote.Repository
@@ -28,7 +29,7 @@ class NewShowsViewModel @Inject constructor(
 
             val user = runCatching {
                 withContext(Dispatchers.IO) {
-
+                    Log.w("Repository", "NewShowsScreen in viewModel")
                     repository.getNewChange()
 
                 }

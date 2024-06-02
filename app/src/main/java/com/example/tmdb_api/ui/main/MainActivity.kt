@@ -17,6 +17,7 @@ import androidx.navigation.navArgument
 import com.example.tmdb_api.ui.main.Home.Detail.DetailScreen
 import com.example.tmdb_api.ui.main.Home.Detail.DetailViewModel
 import com.example.tmdb_api.ui.main.Home.HomeViewModel
+import com.example.tmdb_api.ui.main.NewShows.NewShowsViewModel
 import com.example.tmdb_api.ui.theme.TMDB_ApiTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,13 +25,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val homeViewModel by viewModels<HomeViewModel>()
+    private val newShowViewModel by viewModels<NewShowsViewModel>()
     private val detailViewModel by viewModels<DetailViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        homeViewModel.getRepositoryData()
 
         enableEdgeToEdge()
         setContent {
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
                             MainScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 homeViewModel,
+                                newShowViewModel,
                                 navController
                             )
                         }
