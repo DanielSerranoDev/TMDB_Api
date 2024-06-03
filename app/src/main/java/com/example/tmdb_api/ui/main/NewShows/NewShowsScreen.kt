@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,19 +40,22 @@ import com.example.tmdb_api.ui.main.RatingFloatingButton
 fun NewShowsScreen(
     newShowsViewModel: NewShowsViewModel,
     navController: NavController
-
 ) {
-
     val state by newShowsViewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        newShowsViewModel.getRepositoryData()
+    }
 
     when (state) {
         is NewShowsStates.Success -> {
             val responseRepository = (state as NewShowsStates.Success).data
+            Log.d("Success", responseRepository.toString())
             NewShowsScreenComponents(responseRepository, navController)
         }
 
         is NewShowsStates.Error -> {
-            var error = (state as NewShowsStates.Error).error
+            val error = (state as NewShowsStates.Error).error
             Log.d("Error", error)
         }
 
@@ -59,7 +63,6 @@ fun NewShowsScreen(
             Log.d("State", "Idle")
         }
     }
-
 }
 
 @Composable
@@ -67,12 +70,11 @@ fun NewShowsScreenComponents(
     responseRepository: List<ResponseRemoteUI>,
     navController: NavController
 ) {
-
-    //Box
+    // Box
     val sizeBoxWidth = 190.dp
     val sizeBoxHeight = 250.dp
     //
-    //FloatingActionButton Ratings
+    // FloatingActionButton Ratings
     val sizeWidth = 45
     val sizeHeight = 22
     val paddingStart = 8
@@ -80,58 +82,56 @@ fun NewShowsScreenComponents(
     val fontSize = 14
     val fontColor = Color.White
 
-
     Box(
         modifier = Modifier.background(colorResource(id = R.color.black))
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            //First item
+            // First item
             item {
                 Image(
                     painter = painterResource(id = R.drawable.netflix),
                     contentDescription = "Netflix",
                     modifier = Modifier
-                        .clickable {  }
+                        .clickable { }
                         .size(128.dp, 64.dp)
+                        .padding(8.dp)
                 )
+            }
 
-                LazyColumn(modifier = Modifier.padding(8.dp)) {
-                    items(responseRepository) {
-                        Box(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(sizeBoxWidth, sizeBoxHeight)
-                                .clip(RoundedCornerShape(16.dp))
-                        ) {
-                            Image(
-                                painter = rememberAsyncImagePainter(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(it.imageSet?.verticalPoster?.w240)
-                                        .apply { crossfade(true) }
-                                        .build()
-                                ),
-                                contentDescription = "Film image",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(colorResource(id = R.color.black))
-                                    .clickable {
-                                        navController.navigate("detail/${it.id}")
-                                    }
-                                ,
-                                contentScale = ContentScale.Crop,
-                            )
-                            RatingFloatingButton(
-                                text = it.rating.toString(),
-                                sizeWidth = sizeWidth,
-                                sizeHeight = sizeHeight,
-                                paddingStart = paddingStart,
-                                paddingBottom = paddingBottom,
-                                fontSize = fontSize,
-                                fontColor = fontColor,
-                                modifier = Modifier.align(Alignment.BottomStart)
-                            )
-                        }
-                    }
+            // Items from responseRepository
+            items(responseRepository) { item ->
+                Box(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(sizeBoxWidth, sizeBoxHeight)
+                        .clip(RoundedCornerShape(16.dp))
+                ) {
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(item.imageSet?.verticalPoster?.w240)
+                                .apply { crossfade(true) }
+                                .build()
+                        ),
+                        contentDescription = "Film image",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(colorResource(id = R.color.black))
+                            .clickable {
+                                navController.navigate("detail/${item.id}")
+                            },
+                        contentScale = ContentScale.Crop,
+                    )
+                    RatingFloatingButton(
+                        text = item.rating.toString(),
+                        sizeWidth = sizeWidth,
+                        sizeHeight = sizeHeight,
+                        paddingStart = paddingStart,
+                        paddingBottom = paddingBottom,
+                        fontSize = fontSize,
+                        fontColor = fontColor,
+                        modifier = Modifier.align(Alignment.BottomStart)
+                    )
                 }
             }
         }
@@ -141,5 +141,5 @@ fun NewShowsScreenComponents(
 @Preview
 @Composable
 private fun NewShowsScreen_Preview() {
-   //NewShowsScreen()
+    // NewShowsScreen()
 }

@@ -138,10 +138,3 @@ data class Subtitle (
     val closedCaptions: Boolean,
     val locale: Audio
 )
-
-enum class Type {
-    Addon,
-    Buy,
-    Rent,
-    Subscription
-}

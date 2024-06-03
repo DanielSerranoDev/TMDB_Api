@@ -106,8 +106,12 @@ fun Content(
                 newShowsViewModel.getRepositoryData()
                 Log.w("Repository", "NewShowsScreen")
             }
-            "FavoritesShowsScreen" -> FavoritesShowsScreen()
-            "SettingsScreen" -> FavoritesShowsScreen()
+            "FavoritesShowsScreen" -> {
+                FavoritesShowsScreen()
+            }
+            "SettingsScreen" -> {
+                FavoritesShowsScreen()
+            }
 
         }
     }

@@ -27,17 +27,17 @@ class NewShowsViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { NewShowsStates.Idle }
 
-            val user = runCatching {
+            val response = runCatching {
                 withContext(Dispatchers.IO) {
-                    Log.w("Repository", "NewShowsScreen in viewModel")
+                    //Log.w("Repository", "NewShowsScreen in viewModel")
                     repository.getNewChange()
 
                 }
             }
-            if (user.isSuccess) {
-                _state.update { NewShowsStates.Success(user.getOrThrow()) }
+            if (response.isSuccess) {
+                _state.update { NewShowsStates.Success(response.getOrThrow()) }
             } else {
-                _state.update { NewShowsStates.Error(user.exceptionOrNull()?.message.orEmpty()) }
+                _state.update { NewShowsStates.Error(response.exceptionOrNull()?.message.orEmpty()) }
             }
         }
     }
