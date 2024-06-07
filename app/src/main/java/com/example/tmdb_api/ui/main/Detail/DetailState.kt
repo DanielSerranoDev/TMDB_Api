@@ -1,4 +1,4 @@
-package com.example.tmdb_api.ui.main.Home.Detail
+package com.example.tmdb_api.ui.main.Detail
 
 import com.example.tmdb_api.domain.models.ResponseRemoteUI
 

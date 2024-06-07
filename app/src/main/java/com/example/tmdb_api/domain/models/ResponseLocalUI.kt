@@ -18,7 +18,7 @@ data class ResponseLocalUI (
     @ColumnInfo(name = "cast")val cast: List<String>?,
     @ColumnInfo(name = "rating")val rating: Long?,
     @ColumnInfo(name = "imageSet")val imageSet: ShowImageSet?,
-    @ColumnInfo(name = "streamingOptions")val streamingOptions: StreamingOptions?,
+    @ColumnInfo(name = "streamingOptions")val streamingOptions: StreamingOptions,
     @ColumnInfo(name = "seasonCount")val seasonCount: Long? = null,
     @ColumnInfo(name = "isFavourite") val isFavourite: Boolean = false
 ) 

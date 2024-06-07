@@ -5,6 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,6 +37,9 @@ import coil.request.ImageRequest
 import com.example.tmdb_api.R
 import com.example.tmdb_api.domain.models.ResponseRemoteUI
 import com.example.tmdb_api.ui.main.RatingFloatingButton
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun NewShowsScreen(
@@ -87,17 +92,6 @@ fun NewShowsScreenComponents(
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             // First item
-            item {
-                Image(
-                    painter = painterResource(id = R.drawable.netflix),
-                    contentDescription = "Netflix",
-                    modifier = Modifier
-                        .clickable { }
-                        .size(128.dp, 64.dp)
-                        .padding(8.dp)
-                )
-            }
-
             // Items from responseRepository
             items(responseRepository) { item ->
                 Box(
@@ -106,6 +100,7 @@ fun NewShowsScreenComponents(
                         .size(sizeBoxWidth, sizeBoxHeight)
                         .clip(RoundedCornerShape(16.dp))
                 ) {
+
                     Image(
                         painter = rememberAsyncImagePainter(
                             model = ImageRequest.Builder(LocalContext.current)
@@ -133,9 +128,29 @@ fun NewShowsScreenComponents(
                         modifier = Modifier.align(Alignment.BottomStart)
                     )
                 }
+
+                Column {
+                    item.streamingOptions.us.forEach { streamingOption ->
+                        Text(text = streamingOption.service.name)
+                        Row(){
+                            Text(text = streamingOption.type.toString())
+                            Text(text = streamingOption.price?.amount.toString())
+                            Text(text = convertTimestampToReadableDate(streamingOption.availableSince))
+                        }
+
+
+                    }
+                }
             }
         }
     }
+}
+
+
+fun convertTimestampToReadableDate(timestamp: Long): String {
+    val date = Date(timestamp * 1000)
+    val format = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
+    return format.format(date)
 }
 
 @Preview

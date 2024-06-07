@@ -14,8 +14,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.tmdb_api.ui.main.Home.Detail.DetailScreen
-import com.example.tmdb_api.ui.main.Home.Detail.DetailViewModel
+import com.example.tmdb_api.ui.main.Detail.DetailScreen
+import com.example.tmdb_api.ui.main.Detail.DetailViewModel
 import com.example.tmdb_api.ui.main.Home.HomeViewModel
 import com.example.tmdb_api.ui.main.NewShows.NewShowsViewModel
 import com.example.tmdb_api.ui.theme.TMDB_ApiTheme

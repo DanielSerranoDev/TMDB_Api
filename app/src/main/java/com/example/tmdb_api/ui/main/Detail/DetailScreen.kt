@@ -1,4 +1,4 @@
-package com.example.tmdb_api.ui.main.Home.Detail
+package com.example.tmdb_api.ui.main.Detail
 
 import android.util.Log
 import androidx.compose.foundation.Image

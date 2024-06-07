@@ -13,7 +13,7 @@ val directors: List<String>? = null,
 val cast: List<String>?,
 val rating: Long?,
 val imageSet: ShowImageSet?,
-val streamingOptions: StreamingOptions?,
+val streamingOptions: StreamingOptions,
 val seasonCount: Long? = null,
 )
 

@@ -21,7 +21,7 @@ data class Show (
     val cast: List<String>?,
     val rating: Long?,
     val imageSet: ShowImageSet?,
-    val streamingOptions: StreamingOptions?,
+    val streamingOptions: StreamingOptions,
     val firstAirYear: Long? = null,
     val lastAirYear: Long? = null,
     val creators: List<String>? = null,
@@ -81,12 +81,12 @@ enum class ShowType {
 }
 
 data class StreamingOptions (
-    val us: List<Me>? = null
+    val us: List<Me>
 )
 
 data class Me (
     val service: Addon,
-    val type: String,
+    val type: String? = null,
     val link: String,
     val videoLink: String? = null,
     val quality: String? = null,
@@ -94,7 +94,7 @@ data class Me (
     val subtitles: List<Subtitle>,
     val expiresSoon: Boolean,
     val availableSince: Long,
-    val addon: Addon? = null,
+    val addon: Addon,
     val price: Price? = null,
     val expiresOn: Long? = null
 )

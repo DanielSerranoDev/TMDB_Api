@@ -1,4 +1,4 @@
-package com.example.tmdb_api.ui.main.Home.Detail
+package com.example.tmdb_api.ui.main.Detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
