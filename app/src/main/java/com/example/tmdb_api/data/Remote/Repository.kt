@@ -93,7 +93,7 @@ class Repository @Inject constructor(
         return ResponseRepositoryByCatalog(netflixRatings, amazonPrimeRatings, hboMaxRatings)
     }
 
-    suspend fun getShowsById(id: String): ResponseRemoteUI? {
+    suspend fun getShowsIdRm(id: String): ResponseRemoteUI? {
 
                 Log.d("Repository", "Fetching Series...")
                 val responseRemote = remoteDataSource.getShowById(id)
@@ -103,10 +103,10 @@ class Repository @Inject constructor(
 
     }
 
-    suspend fun getShowDB(id: String): ResponseLocalUI {
+    suspend fun getShowIdDB(id: String): ResponseLocalUI {
 
         return withContext(Dispatchers.IO) {
-            localDataSourceInterface.getShowById(id)
+            localDataSourceInterface.getShowIdDB(id)
         }
     }
 
@@ -115,8 +115,9 @@ class Repository @Inject constructor(
         localDataSourceInterface.insertShows(remoteShowUIToLocalShowUI)
     }
 
-    fun updateStatusFavourite(id: String, favorite: Boolean){
-        localDataSourceInterface.updateStatusFavourite(id,favorite)
+
+    fun deleteShow(id: String){
+        localDataSourceInterface.deleteShow(id)
     }
 
 }

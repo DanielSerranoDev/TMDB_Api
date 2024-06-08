@@ -30,7 +30,7 @@ class DetailViewModel @Inject constructor(
 
             val show = runCatching {
                 withContext(Dispatchers.IO) {
-                    repository.getShowsById(id)
+                    repository.getShowsIdRm(id)
                 }
             }
             if(show.isSuccess){
@@ -53,20 +53,19 @@ class DetailViewModel @Inject constructor(
 
    suspend fun getShowById(id: String): ResponseLocalUI {
         return withContext(Dispatchers.IO) {
-            repository.getShowDB(id)
+            repository.getShowIdDB(id)
         }
+
    }
 
 
 
-    fun updateStatusFavourite(id: String, favorite: Boolean) {
+    fun deleteShow(id: String) {
         viewModelScope.launch {
-            val showDB= withContext(Dispatchers.IO) {
-                repository.updateStatusFavourite(id, favorite)
-
+            val showDB = withContext(Dispatchers.IO) {
+                repository.deleteShow(id)
             }
         }
-
     }
 
 

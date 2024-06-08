@@ -49,21 +49,13 @@ fun DetailScreen(
     id: String,
     detailViewModel: DetailViewModel
 ) {
-    val showId = id
     val state by detailViewModel.state.collectAsState()
-    var show by remember { mutableStateOf<ResponseLocalUI?>(null) }
-
-
-    LaunchedEffect(id) {
-        show = detailViewModel.getShowById(id)
-    }
-
 
     when (state) {
         is DetailState.Success -> {
             val responseRepository = (state as DetailState.Success).data
 
-            DetailComponents(responseRepository, detailViewModel, show)
+            DetailComponents(responseRepository, detailViewModel)
 
         }
 
@@ -83,11 +75,15 @@ fun DetailScreen(
 fun DetailComponents(
     responseRepository: ResponseRemoteUI?,
     detailViewModel: DetailViewModel,
-    show: ResponseLocalUI?
 ) {
-    var favorite by remember {mutableStateOf(false)}
 
-    Text(text = show?.title?:"Title")
+    var show by remember { mutableStateOf<ResponseLocalUI?>(null) }
+
+    LaunchedEffect(responseRepository?.id) {
+        show = detailViewModel.getShowById(responseRepository?.id.toString())
+    }
+
+
 
     Box(
         modifier = Modifier
@@ -104,6 +100,11 @@ fun DetailComponents(
                         .size(220.dp)
                         .background(colorResource(id = R.color.black))
                 ) {
+                    Text(
+                        text = show?.title?:"Title",
+                        fontSize = 32.sp,
+                        )
+                    Log.d("show", show?.title.toString())
                     Image(
                         painter = rememberAsyncImagePainter(
                             model = ImageRequest.Builder(LocalContext.current)
@@ -153,14 +154,10 @@ fun DetailComponents(
 
                     SmallFloatingActionButton(
                         onClick = {
-                            if(favorite){
-                                favorite = false
-                                //detailViewModel.updateStatusFavourite(responseRepository?.id!!,favorite)
+                            if(show != null){
+                                detailViewModel.deleteShow(responseRepository?.id!!)
                             }else{
-                                favorite = true
                                 detailViewModel.insertShow(responseRepository)
-                                //detailViewModel.updateStatusFavourite(responseRepository?.id!!,favorite)
-
                             }
                                                 },
                         containerColor = Color.Transparent,
@@ -174,9 +171,10 @@ fun DetailComponents(
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                if(favorite){
+                                if(show != null){
                                     Icon(
-                                        imageVector = Icons.Default.Favorite,
+                                        imageVector = Icons.Default.FavoriteBorder,
+
                                         contentDescription = "Favorite icon",
                                         tint = Color.Red,
                                         modifier = Modifier
@@ -184,7 +182,8 @@ fun DetailComponents(
                                     )
                                 }else{
                                     Icon(
-                                        imageVector = Icons.Default.FavoriteBorder,
+                                        imageVector = Icons.Default.Favorite,
+
                                         contentDescription = "Favorite icon",
                                         tint = Color.Red,
                                         modifier = Modifier

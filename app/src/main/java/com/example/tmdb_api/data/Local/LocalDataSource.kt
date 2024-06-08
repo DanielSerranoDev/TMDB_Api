@@ -20,8 +20,12 @@ class LocalDataSource @Inject constructor(private val dao: ShowDAO): LocalDataSo
         return dao.getShowStatusFavourite(id)
     }
 
-    override fun getShowById(id: String): ResponseLocalUI {
+    override fun getShowIdDB(id: String): ResponseLocalUI {
         return dao.getShowById(id)
+    }
+
+    override fun deleteShow(id: String) {
+        return dao.deleteShow(id)
     }
 
 

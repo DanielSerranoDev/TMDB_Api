@@ -1,7 +1,6 @@
 package com.example.tmdb_api.data.Local
 
 import com.example.tmdb_api.domain.models.ResponseLocalUI
-import com.example.tmdb_api.domain.models.Show
 
 interface LocalDataSourceInterface{
 
@@ -9,8 +8,8 @@ interface LocalDataSourceInterface{
     fun updateStatusFavourite(id:String,isFavourite:Boolean)
     fun getStatusFavourites(id:String):Boolean
 
-    fun getShowById(id:String):ResponseLocalUI
-
+    fun getShowIdDB(id:String):ResponseLocalUI
+    fun deleteShow(id:String)
 
 
 }
