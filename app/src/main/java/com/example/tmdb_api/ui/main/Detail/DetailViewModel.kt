@@ -3,6 +3,8 @@ package com.example.tmdb_api.ui.main.Detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tmdb_api.data.Remote.Repository
+import com.example.tmdb_api.domain.models.ResponseLocalUI
+import com.example.tmdb_api.domain.models.ResponseRemoteUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,5 +41,33 @@ class DetailViewModel @Inject constructor(
 
         }
     }
+
+    fun insertShow(responseRepository: ResponseRemoteUI?) {
+        viewModelScope.launch {
+            val showDB= withContext(Dispatchers.IO) {
+                repository.insertShow(responseRepository!!)
+            }
+        }
+
+    }
+
+   suspend fun getShowById(id: String): ResponseLocalUI {
+        return withContext(Dispatchers.IO) {
+            repository.getShowDB(id)
+        }
+   }
+
+
+
+    fun updateStatusFavourite(id: String, favorite: Boolean) {
+        viewModelScope.launch {
+            val showDB= withContext(Dispatchers.IO) {
+                repository.updateStatusFavourite(id, favorite)
+
+            }
+        }
+
+    }
+
 
 }

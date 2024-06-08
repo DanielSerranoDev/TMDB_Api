@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,22 +41,29 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.tmdb_api.R
+import com.example.tmdb_api.domain.models.ResponseLocalUI
 import com.example.tmdb_api.domain.models.ResponseRemoteUI
 
 @Composable
 fun DetailScreen(
     id: String,
-    viewModel: DetailViewModel
+    detailViewModel: DetailViewModel
 ) {
     val showId = id
-    val state by viewModel.state.collectAsState()
+    val state by detailViewModel.state.collectAsState()
+    var show by remember { mutableStateOf<ResponseLocalUI?>(null) }
+
+
+    LaunchedEffect(id) {
+        show = detailViewModel.getShowById(id)
+    }
 
 
     when (state) {
         is DetailState.Success -> {
             val responseRepository = (state as DetailState.Success).data
 
-            DetailComponents(responseRepository)
+            DetailComponents(responseRepository, detailViewModel, show)
 
         }
 
@@ -73,9 +81,14 @@ fun DetailScreen(
 
 @Composable
 fun DetailComponents(
-    responseRepository: ResponseRemoteUI?
+    responseRepository: ResponseRemoteUI?,
+    detailViewModel: DetailViewModel,
+    show: ResponseLocalUI?
 ) {
     var favorite by remember {mutableStateOf(false)}
+
+    Text(text = show?.title?:"Title")
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -140,10 +153,14 @@ fun DetailComponents(
 
                     SmallFloatingActionButton(
                         onClick = {
-                            favorite = if(favorite){
-                                false
+                            if(favorite){
+                                favorite = false
+                                //detailViewModel.updateStatusFavourite(responseRepository?.id!!,favorite)
                             }else{
-                                true
+                                favorite = true
+                                detailViewModel.insertShow(responseRepository)
+                                //detailViewModel.updateStatusFavourite(responseRepository?.id!!,favorite)
+
                             }
                                                 },
                         containerColor = Color.Transparent,

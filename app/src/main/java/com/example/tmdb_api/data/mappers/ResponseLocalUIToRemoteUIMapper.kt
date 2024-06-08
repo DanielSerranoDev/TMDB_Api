@@ -6,6 +6,8 @@ import com.example.tmdb_api.domain.models.Show
 import javax.inject.Inject
 
 class ResponseLocalUIToRemoteUIMapper @Inject constructor() {
+
+    /*
     fun mapShowList(responseRemote: List<ResponseLocalUI>): List<ResponseRemoteUI> {
         return responseRemote.map {
             ResponseRemoteUI(
@@ -45,4 +47,6 @@ class ResponseLocalUIToRemoteUIMapper @Inject constructor() {
             responseRemote.seasonCount
         )
     }
+
+     */
 }

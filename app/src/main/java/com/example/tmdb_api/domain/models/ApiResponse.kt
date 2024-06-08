@@ -94,7 +94,7 @@ data class Me (
     val subtitles: List<Subtitle>,
     val expiresSoon: Boolean,
     val availableSince: Long,
-    val addon: Addon,
+    val addon: Addon? = null,
     val price: Price? = null,
     val expiresOn: Long? = null
 )

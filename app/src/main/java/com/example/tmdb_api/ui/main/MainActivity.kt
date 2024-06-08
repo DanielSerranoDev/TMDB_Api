@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
                         val response = detailViewModel.getDetail(id!!)
                         DetailScreen(
                             id,
-                            viewModel = detailViewModel,
+                            detailViewModel = detailViewModel,
                         )
                     }
 

@@ -10,20 +10,7 @@ class ResponseRemoteUIToLocalUIMapper @Inject constructor() {
         return responseRemote.map {
             ResponseLocalUI(
                 it.id,
-                it.imdbID,
                 it.title,
-                it.overview,
-                it.releaseYear,
-                it.originalTitle,
-                it.genres,
-                it.directors,
-                it.cast,
-                it.rating,
-                it.imageSet,
-                it.streamingOptions,
-                it.seasonCount
-
-
             )
         }
     }
@@ -31,18 +18,7 @@ class ResponseRemoteUIToLocalUIMapper @Inject constructor() {
     fun mapShow(responseRemote: ResponseRemoteUI): ResponseLocalUI {
         return ResponseLocalUI(
             responseRemote.id,
-            responseRemote.imdbID,
             responseRemote.title,
-            responseRemote.overview,
-            responseRemote.releaseYear,
-            responseRemote.originalTitle,
-            responseRemote.genres,
-            responseRemote.directors,
-            responseRemote.cast,
-            responseRemote.rating,
-            responseRemote.imageSet,
-            responseRemote.streamingOptions,
-            responseRemote.seasonCount
         )
     }
 
