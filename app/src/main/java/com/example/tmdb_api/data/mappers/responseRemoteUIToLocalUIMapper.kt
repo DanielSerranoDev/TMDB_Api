@@ -11,6 +11,7 @@ class ResponseRemoteUIToLocalUIMapper @Inject constructor() {
             ResponseLocalUI(
                 it.id,
                 it.title,
+                it.imageSet
             )
         }
     }
@@ -19,6 +20,7 @@ class ResponseRemoteUIToLocalUIMapper @Inject constructor() {
         return ResponseLocalUI(
             responseRemote.id,
             responseRemote.title,
+            responseRemote.imageSet
         )
     }
 

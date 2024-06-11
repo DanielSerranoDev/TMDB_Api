@@ -247,7 +247,7 @@ fun DetailComponents(
                             onClick = { /*TODO*/ },
                             modifier = Modifier
                                 .padding(1.dp) 
-                                .height(28.dp)
+                                .height(30.dp)
                         ) {
                             Text(
                                 text = castMember,

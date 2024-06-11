@@ -24,11 +24,4 @@ interface ShowDAO {
     fun getShowById(id: String): ResponseLocalUI
 
 
-    @Query("UPDATE showDB SET isFavourite = :isFavourite WHERE id = :id")
-    fun updateFavourite(id: String, isFavourite: Boolean)
-
-
-    @Query("SELECT isFavourite FROM showDB WHERE id = :id")
-    fun getShowStatusFavourite(id: String): Boolean
-
 }

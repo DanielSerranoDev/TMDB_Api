@@ -10,16 +10,6 @@ class LocalDataSource @Inject constructor(private val dao: ShowDAO): LocalDataSo
         return dao.insertShow(show)
     }
 
-
-    override fun updateStatusFavourite(id: String, isFavourite: Boolean) {
-        return dao.updateFavourite(id, isFavourite)
-    }
-
-
-    override fun getStatusFavourites(id: String): Boolean {
-        return dao.getShowStatusFavourite(id)
-    }
-
     override fun getShowIdDB(id: String): ResponseLocalUI {
         return dao.getShowById(id)
     }
