@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -76,8 +77,8 @@ fun NewShowsScreenComponents(
     navController: NavController
 ) {
     // Box
-    val sizeBoxWidth = 190.dp
-    val sizeBoxHeight = 250.dp
+    val sizeBoxWidth = 300.dp
+    val sizeBoxHeight = 300.dp
     //
     // FloatingActionButton Ratings
     val sizeWidth = 45
@@ -90,8 +91,10 @@ fun NewShowsScreenComponents(
     Box(
         modifier = Modifier.background(colorResource(id = R.color.black))
     ) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            // First item
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             // Items from responseRepository
             items(responseRepository) { item ->
                 Box(
@@ -129,17 +132,34 @@ fun NewShowsScreenComponents(
                     )
                 }
 
-                Column {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
                     item.streamingOptions.us.forEach { streamingOption ->
-                        Text(text = streamingOption.service.name)
-                        Row(){
-                            Text(text = streamingOption.type.toString())
-                            Text(text = streamingOption.price?.amount.toString())
-                            Text(text = convertTimestampToReadableDate(streamingOption.availableSince))
+                        Text(
+                            text = "Plataform: ${streamingOption.service.name}"
+                        )
+
+                        if (streamingOption.type != "null") {
+                            Text(
+                                text = "Service: ${streamingOption.type.toString()}",
+                                modifier = Modifier.size(100.dp,20.dp)
+                            )
+
                         }
+                        if(streamingOption.price != null) {
 
+                            Text(
+                                text = "Amount: ${streamingOption.price?.amount.toString()}"
+                            )
+                        }
+                        Text(text = "Date:${convertTimestampToReadableDate(streamingOption.availableSince)}")
 
+                        Text("--------------------------------")
                     }
+
+
                 }
             }
         }
@@ -147,9 +167,10 @@ fun NewShowsScreenComponents(
 }
 
 
+
 fun convertTimestampToReadableDate(timestamp: Long): String {
     val date = Date(timestamp * 1000)
-    val format = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
+    val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     return format.format(date)
 }
 
