@@ -14,34 +14,29 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val repository: Repository
-): ViewModel() {
+class HomeViewModel
+    @Inject
+    constructor(
+        private val repository: Repository,
+    ) : ViewModel() {
+        private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Idle)
+        val state: StateFlow<HomeState> = _state.asStateFlow()
 
-    private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Idle)
-    val state: StateFlow<HomeState> = _state.asStateFlow()
+        fun getRepositoryData() {
+            viewModelScope.launch {
+                _state.update { HomeState.Idle }
 
-    fun getRepositoryData(){
-
-        viewModelScope.launch {
-            _state.update { HomeState.Idle }
-
-            val user = runCatching {
-                withContext(Dispatchers.IO) {
-
-                    repository.repositoryResponseByCatalog()
-
+                val user =
+                    runCatching {
+                        withContext(Dispatchers.IO) {
+                            repository.repositoryResponseByCatalog()
+                        }
+                    }
+                if (user.isSuccess) {
+                    _state.update { HomeState.Success(user.getOrThrow()) }
+                } else {
+                    _state.update { HomeState.Error(user.exceptionOrNull()?.message.orEmpty()) }
                 }
-            }
-            if (user.isSuccess) {
-                _state.update { HomeState.Success(user.getOrThrow()) }
-            } else {
-                _state.update { HomeState.Error(user.exceptionOrNull()?.message.orEmpty()) }
             }
         }
     }
-
-
-
-
-}

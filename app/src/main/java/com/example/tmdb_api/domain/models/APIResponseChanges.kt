@@ -4,7 +4,7 @@ data class APIResponseChanges(
     val changes: List<Change>? = null,
     val shows: Map<String, Show>,
     val hasMore: Boolean? = null,
-    val nextCursor: String? = null
+    val nextCursor: String? = null,
 )
 
 data class Change(
@@ -16,9 +16,5 @@ data class Change(
     val streamingOptionType: String? = null,
     val addon: Addon? = null,
     val timestamp: Long? = null,
-    val link: String? = null
+    val link: String? = null,
 )
-
-
-
-

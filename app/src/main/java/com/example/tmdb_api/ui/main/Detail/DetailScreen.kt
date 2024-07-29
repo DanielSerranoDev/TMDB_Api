@@ -47,7 +47,7 @@ import com.example.tmdb_api.domain.models.ResponseRemoteUI
 @Composable
 fun DetailScreen(
     id: String,
-    detailViewModel: DetailViewModel
+    detailViewModel: DetailViewModel,
 ) {
     val state by detailViewModel.state.collectAsState()
 
@@ -56,19 +56,17 @@ fun DetailScreen(
             val responseRepository = (state as DetailState.Success).data
 
             DetailComponents(responseRepository, detailViewModel)
-
         }
 
         is DetailState.Error -> {
             var error = (state as DetailState.Error).error
             Log.d("Error", error)
         }
+
         DetailState.Idle -> {
             Log.d("State", "Idle")
         }
     }
-
-
 }
 
 @Composable
@@ -76,77 +74,77 @@ fun DetailComponents(
     responseRepository: ResponseRemoteUI?,
     detailViewModel: DetailViewModel,
 ) {
-
     var show by remember { mutableStateOf<ResponseLocalUI?>(null) }
 
     LaunchedEffect(responseRepository?.id) {
         show = detailViewModel.getShowById(responseRepository?.id.toString())
     }
 
-
-
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.backgroundBars))
+            .background(colorResource(id = R.color.backgroundBars)),
     ) {
-        LazyColumn(
-        ) {
-
-            item() {
+        LazyColumn {
+            item {
                 Box(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillParentMaxWidth()
                         .size(220.dp)
-                        .background(colorResource(id = R.color.black))
+                        .background(colorResource(id = R.color.black)),
                 ) {
                     Text(
-                        text = show?.title?:"Title",
+                        text = show?.title ?: "Title",
                         fontSize = 32.sp,
-                        )
+                    )
                     Log.d("show", show?.title.toString())
                     Image(
-                        painter = rememberAsyncImagePainter(
-                            model = ImageRequest.Builder(LocalContext.current)
+                        painter =
+                        rememberAsyncImagePainter(
+                            model =
+                            ImageRequest
+                                .Builder(LocalContext.current)
                                 .data(responseRepository?.imageSet?.horizontalPoster?.w360)
                                 .apply { crossfade(true) }
-                                .build()
+                                .build(),
                         ),
                         contentDescription = "show image",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.FillWidth,
                     )
                 }
-
             }
-            item() {
-                Row (
-                    modifier = Modifier
+            item {
+                Row(
+                    modifier =
+                    Modifier
                         .fillParentMaxWidth()
-                        .padding(16.dp,10.dp)
-                ){
+                        .padding(16.dp, 10.dp),
+                ) {
                     SmallFloatingActionButton(
                         onClick = { /*TODO*/ },
                         containerColor = Color.Transparent,
-                        modifier = Modifier.size(64.dp)
+                        modifier = Modifier.size(64.dp),
                     ) {
                         Box(
                             contentAlignment = Alignment.Center,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.size(64.dp),
                         ) {
                             Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
+                                horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Star,
                                     contentDescription = "rating icon",
                                     tint = Color.Yellow,
-                                    modifier = Modifier.size(36.dp)
+                                    modifier = Modifier.size(36.dp),
                                 )
                                 Text(
-                                        text = "${responseRepository?.rating.toString()}/100",
+                                    text = "${responseRepository?.rating}/100",
                                     color = Color.White,
-                                    fontSize = 16.sp
+                                    fontSize = 16.sp,
                                 )
                             }
                         }
@@ -154,165 +152,183 @@ fun DetailComponents(
 
                     SmallFloatingActionButton(
                         onClick = {
-                            if(show != null){
+                            if (show != null) {
                                 detailViewModel.deleteShow(responseRepository?.id!!)
-                            }else{
+                            } else {
                                 detailViewModel.insertShow(responseRepository)
                             }
-                                                },
+                        },
                         containerColor = Color.Transparent,
-                        modifier = Modifier.size(64.dp)
+                        modifier = Modifier.size(64.dp),
                     ) {
                         Box(
                             contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(64.dp)
+                            modifier =
+                            Modifier
+                                .size(64.dp),
                         ) {
                             Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
+                                horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
-                                if(show != null){
+                                if (show != null) {
                                     Icon(
                                         imageVector = Icons.Default.FavoriteBorder,
-
                                         contentDescription = "Favorite icon",
                                         tint = Color.Red,
-                                        modifier = Modifier
-                                            .size(36.dp)
+                                        modifier =
+                                        Modifier
+                                            .size(36.dp),
                                     )
-                                }else{
+                                } else {
                                     Icon(
                                         imageVector = Icons.Default.Favorite,
-
                                         contentDescription = "Favorite icon",
                                         tint = Color.Red,
-                                        modifier = Modifier
-                                            .size(36.dp)
+                                        modifier =
+                                        Modifier
+                                            .size(36.dp),
                                     )
                                 }
                                 Text(
                                     text = "Favorite",
                                     color = Color.White,
-                                    fontSize = 16.sp
+                                    fontSize = 16.sp,
                                 )
                             }
                         }
                     }
-
-
                 }
             }
-            item(){
+            item {
                 Text(
                     text = responseRepository?.title.toString(),
                     color = Color.White,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp,10.dp)
+                    modifier = Modifier.padding(16.dp, 10.dp),
                 )
             }
-            item(){
+            item {
                 Text(
-                    text = "Release Year: ${responseRepository?.releaseYear.toString()}",
+                    text = "Release Year: ${responseRepository?.releaseYear}",
                     color = Color.White,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp,10.dp)
+                    modifier = Modifier.padding(16.dp, 10.dp),
                 )
-
             }
 
-            item(){
-                LazyRow {
-                    items(responseRepository?.genres!!){
-                        OutlinedButton(onClick = { /*TODO*/ }) {
-                            Text(text = it.name)
+            item {
+                LazyRow(
+                    modifier = Modifier.padding(10.dp, 0.dp)
+                ) {
+                    items(responseRepository?.genres!!) {
+                        OutlinedButton(
+                            onClick = { /*TODO*/ },
+                            modifier =
+                            Modifier
+                                .padding(1.dp)
+                                .height(10.dp),
+                        ) {
+                            Text(
+                                text = it.name,
+                                fontSize = 12.sp,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp),
+                                )
                         }
                     }
                 }
             }
-            item(){
+
+            item {
+                Text(
+                    text = "Directors",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(10.dp, 5.dp),
+                )
+            }
+            item {
+
+                LazyRow(
+                    modifier = Modifier.padding(10.dp, 0.dp)
+                ) {
+                    items(responseRepository?.directors ?: emptyList()) { directorMember ->
+                        OutlinedButton(
+                            onClick = { /*TODO*/ },
+                            modifier =
+                            Modifier
+                                .padding(1.dp)
+                                .height(30.dp),
+                        ) {
+                            Text(
+                                text = directorMember,
+                                fontSize = 12.sp,
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                            )
+                        }
+                    }
+                }
+            }
+            item {
                 Text(
                     text = "Lead Starring",
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp,5.dp)
+                    modifier = Modifier.padding(10.dp, 5.dp),
                 )
             }
             item {
-                LazyRow {
+                LazyRow(
+                    modifier = Modifier.padding(10.dp, 0.dp)
+                ) {
                     items(responseRepository?.cast ?: emptyList()) { castMember ->
                         OutlinedButton(
                             onClick = { /*TODO*/ },
-                            modifier = Modifier
-                                .padding(1.dp) 
-                                .height(30.dp)
+                            modifier =
+                            Modifier
+                                .height(30.dp),
                         ) {
                             Text(
                                 text = castMember,
                                 fontSize = 12.sp,
-                                modifier = Modifier.padding(horizontal = 8.dp)
+                                modifier = Modifier.padding(horizontal = 8.dp),
                             )
                         }
                     }
                 }
             }
 
-
-            item(){
+            item {
                 Text(
                     text = "Synopsis",
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp,5.dp)
-                    )
+                    modifier = Modifier.padding(10.dp, 5.dp),
+                )
             }
 
-            item(){
+            item {
                 Text(
                     text = responseRepository?.overview.toString(),
                     color = Color.White,
-                    fontSize = 12.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp,5.dp),
+                    modifier = Modifier.padding(10.dp, 5.dp),
                 )
             }
-
-
-
-            item(){
-                Text(
-                    text = "Directors",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp,5.dp)
-                )
-            }
-            item(){
-                Text(
-                    text = responseRepository?.directors.toString(),
-                    color = Color.White,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp,5.dp),
-                )
-
-            }
-
-
-
 
 
         }
-
     }
 }
 
 @Preview
 @Composable
 private fun DetailScreen_Preview() {
-    //DetailComponents()
+    // DetailComponents()
 }

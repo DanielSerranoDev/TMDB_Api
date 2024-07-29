@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.tmdb_api.R
+import com.example.tmdb_api.ui.main.Favorites.FavoritesShowsScreen
 import com.example.tmdb_api.ui.main.Home.HomeScreen
 import com.example.tmdb_api.ui.main.Home.HomeViewModel
-import com.example.tmdb_api.ui.main.Favorites.FavoritesShowsScreen
 import com.example.tmdb_api.ui.main.NewShows.NewShowsScreen
 import com.example.tmdb_api.ui.main.NewShows.NewShowsViewModel
 
@@ -44,13 +44,12 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
     newShowsViewModel: NewShowsViewModel,
-    navController: NavController
+    navController: NavController,
 ) {
     var selectedScreen by remember { mutableStateOf("HomeScreen") }
 
     Scaffold(
         topBar = { TopBar() },
-
         content = { paddingValues ->
 
             Content(
@@ -58,14 +57,11 @@ fun MainScreen(
                 homeViewModel = homeViewModel,
                 newShowsViewModel = newShowsViewModel,
                 navController,
-                selectedScreen
+                selectedScreen,
             )
-
-
         },
-        bottomBar = { BottomBar() { screen -> selectedScreen = screen } }
+        bottomBar = { BottomBar { screen -> selectedScreen = screen } },
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,14 +69,12 @@ fun MainScreen(
 fun TopBar() {
     TopAppBar(
         title = { Text(text = "TMDB_API", fontSize = 30.sp, color = Color.White) },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colorResource(id = R.color.backgroundBars),
-        )
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = colorResource(id = R.color.backgroundBars),
+            ),
     )
-
-
 }
-
 
 @Composable
 fun Content(
@@ -88,21 +82,19 @@ fun Content(
     homeViewModel: HomeViewModel,
     newShowsViewModel: NewShowsViewModel,
     navController: NavController,
-    selectedScreen: String
+    selectedScreen: String,
 ) {
-
     Box(modifier = Modifier.padding(paddingValues)) {
-
         when (selectedScreen) {
-
             "HomeScreen" -> {
                 HomeScreen(homeViewModel, navController)
                 homeViewModel.getRepositoryData()
-
             }
             "NewShowsScreen" -> {
                 NewShowsScreen(
-                    newShowsViewModel, navController)
+                    newShowsViewModel,
+                    navController,
+                )
                 newShowsViewModel.getRepositoryData()
                 Log.w("Repository", "NewShowsScreen")
             }
@@ -112,22 +104,15 @@ fun Content(
             "SettingsScreen" -> {
                 FavoritesShowsScreen()
             }
-
         }
     }
-
-
 }
 
-
 @Composable
-fun BottomBar(
-    onScreenSelected: (String) -> Unit
-) {
+fun BottomBar(onScreenSelected: (String) -> Unit) {
     BottomAppBar(
         containerColor = colorResource(id = R.color.backgroundBars),
-        contentColor = Color.White
-
+        contentColor = Color.White,
     ) {
         NavigationBarItem(
             selected = false,
@@ -135,83 +120,73 @@ fun BottomBar(
             icon = {
                 Column(
                     modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                     Icon(
                         imageVector = Icons.Default.Home,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-
+                        modifier = Modifier.size(24.dp),
                     )
                     Text(text = "Home")
                 }
-
-            })
+            },
+        )
         NavigationBarItem(
             selected = false,
-            onClick = { onScreenSelected("NewShowsScreen")},
+            onClick = { onScreenSelected("NewShowsScreen") },
             icon = {
                 Column(
                     modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                     Icon(
                         imageVector = Icons.Default.AccessTimeFilled,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-
+                        modifier = Modifier.size(24.dp),
                     )
                     Text(text = "Nuevo")
                 }
-            })
+            },
+        )
         NavigationBarItem(
             selected = false,
-            onClick = { onScreenSelected("FavoritesShowsScreen")},
+            onClick = { onScreenSelected("FavoritesShowsScreen") },
             icon = {
                 Column(
                     modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-
+                        modifier = Modifier.size(24.dp),
                     )
                     Text(text = "Favorites")
                 }
-            })
+            },
+        )
         NavigationBarItem(
             selected = false,
-            onClick = { onScreenSelected("SettingsScreen")},
+            onClick = { onScreenSelected("SettingsScreen") },
             icon = {
                 Column(
                     modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                     Icon(
                         imageVector = Icons.Default.Settings,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-
+                        modifier = Modifier.size(24.dp),
                     )
                     Text(text = "Settings")
                 }
-            })
-
-
+            },
+        )
     }
-
-
 }
-
 
 @Preview
 @Composable
 private fun MainScreen_Preview() {
-    //MainScreen()
+    // MainScreen()
 }

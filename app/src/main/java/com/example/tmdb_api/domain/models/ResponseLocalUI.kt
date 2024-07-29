@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "showDB")
-data class ResponseLocalUI (
+data class ResponseLocalUI(
     @PrimaryKey
     @ColumnInfo(name = "id")val id: String,
     @ColumnInfo(name = "title")val title: String?,

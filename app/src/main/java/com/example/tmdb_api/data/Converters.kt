@@ -1,59 +1,39 @@
 package com.example.tmdb_api.data.Local
 
 import androidx.room.TypeConverter
+import com.example.tmdb_api.domain.models.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.example.tmdb_api.domain.models.*
 
 class Converters {
+    @TypeConverter
+    fun fromGenreList(genres: List<Genre>?): String? = Gson().toJson(genres)
 
     @TypeConverter
-    fun fromGenreList(genres: List<Genre>?): String? {
-        return Gson().toJson(genres)
-    }
+    fun toGenreList(genresString: String?): List<Genre>? = Gson().fromJson(genresString, object : TypeToken<List<Genre>>() {}.type)
 
     @TypeConverter
-    fun toGenreList(genresString: String?): List<Genre>? {
-        return Gson().fromJson(genresString, object : TypeToken<List<Genre>>() {}.type)
-    }
+    fun fromStringList(strings: List<String>?): String? = Gson().toJson(strings)
 
     @TypeConverter
-    fun fromStringList(strings: List<String>?): String? {
-        return Gson().toJson(strings)
-    }
+    fun toStringList(strings: String?): List<String>? = Gson().fromJson(strings, object : TypeToken<List<String>>() {}.type)
 
     @TypeConverter
-    fun toStringList(strings: String?): List<String>? {
-        return Gson().fromJson(strings, object : TypeToken<List<String>>() {}.type)
-    }
+    fun fromShowImageSet(imageSet: ShowImageSet?): String? = Gson().toJson(imageSet)
 
     @TypeConverter
-    fun fromShowImageSet(imageSet: ShowImageSet?): String? {
-        return Gson().toJson(imageSet)
-    }
+    fun toShowImageSet(imageSetString: String?): ShowImageSet? = Gson().fromJson(imageSetString, object : TypeToken<ShowImageSet>() {}.type)
 
     @TypeConverter
-    fun toShowImageSet(imageSetString: String?): ShowImageSet? {
-        return Gson().fromJson(imageSetString, object : TypeToken<ShowImageSet>() {}.type)
-    }
+    fun fromStreamingOptions(streamingOptions: StreamingOptions?): String? = Gson().toJson(streamingOptions)
 
     @TypeConverter
-    fun fromStreamingOptions(streamingOptions: StreamingOptions?): String? {
-        return Gson().toJson(streamingOptions)
-    }
+    fun toStreamingOptions(streamingOptionsString: String?): StreamingOptions? =
+        Gson().fromJson(streamingOptionsString, object : TypeToken<StreamingOptions>() {}.type)
 
     @TypeConverter
-    fun toStreamingOptions(streamingOptionsString: String?): StreamingOptions? {
-        return Gson().fromJson(streamingOptionsString, object : TypeToken<StreamingOptions>() {}.type)
-    }
+    fun fromGenre(genre: Genre?): String? = Gson().toJson(genre)
 
     @TypeConverter
-    fun fromGenre(genre: Genre?): String? {
-        return Gson().toJson(genre)
-    }
-
-    @TypeConverter
-    fun toGenre(genreString: String?): Genre? {
-        return Gson().fromJson(genreString, object : TypeToken<Genre>() {}.type)
-    }
+    fun toGenre(genreString: String?): Genre? = Gson().fromJson(genreString, object : TypeToken<Genre>() {}.type)
 }

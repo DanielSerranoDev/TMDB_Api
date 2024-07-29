@@ -23,15 +23,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     private val homeViewModel by viewModels<HomeViewModel>()
     private val newShowViewModel by viewModels<NewShowsViewModel>()
     private val detailViewModel by viewModels<DetailViewModel>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         enableEdgeToEdge()
         setContent {
@@ -40,24 +37,26 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = "home") {
                     composable("home") {
-
                         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                             MainScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 homeViewModel,
                                 newShowViewModel,
-                                navController
+                                navController,
                             )
                         }
                     }
 
-                    composable("detail/{id}",
-                        arguments = listOf(
-                            navArgument("id") {
-                                this.type = NavType.StringType
-                                nullable = false
-                            })
-                        ) {
+                    composable(
+                        "detail/{id}",
+                        arguments =
+                            listOf(
+                                navArgument("id") {
+                                    this.type = NavType.StringType
+                                    nullable = false
+                                },
+                            ),
+                    ) {
                         val id = it.arguments?.getString("id")
                         val response = detailViewModel.getDetail(id!!)
                         DetailScreen(
@@ -65,12 +64,8 @@ class MainActivity : ComponentActivity() {
                             detailViewModel = detailViewModel,
                         )
                     }
-
                 }
-
-
             }
         }
     }
 }
-

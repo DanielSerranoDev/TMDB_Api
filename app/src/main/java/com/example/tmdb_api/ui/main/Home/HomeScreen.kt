@@ -12,8 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.SmallFloatingActionButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,7 +25,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -39,7 +36,7 @@ import com.example.tmdb_api.ui.main.RatingFloatingButton
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    navController: NavController
+    navController: NavController,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -51,7 +48,6 @@ fun HomeScreen(
             var hboMaxRating = responseRepository.hboMaxRatings
 
             HomeScreenComponents(netflixRating, amazonPrimeRating, hboMaxRating, navController)
-
         }
 
         is HomeState.Error -> {
@@ -71,7 +67,7 @@ fun HomeScreenComponents(
     movies: List<ResponseRemoteUI>,
     series: List<ResponseRemoteUI>,
     moviesAction: List<ResponseRemoteUI>,
-    navController: NavController
+    navController: NavController,
 ) {
     //Box
     val sizeBoxWidth = 190.dp
@@ -97,32 +93,36 @@ fun HomeScreenComponents(
                     contentDescription = "Netflix",
                     modifier = Modifier
                         .clickable {  }
-                        .size(128.dp, 64.dp)
+                        .size(128.dp,64.dp),
                 )
 
                 LazyRow(modifier = Modifier.padding(8.dp)) {
                     items(movies) {
                         Box(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .padding(8.dp)
                                 .size(sizeBoxWidth, sizeBoxHeight)
-                                .clip(RoundedCornerShape(16.dp))
+                                .clip(RoundedCornerShape(16.dp)),
                         ) {
                             Image(
-                                painter = rememberAsyncImagePainter(
-                                    model = ImageRequest.Builder(LocalContext.current)
+                                painter =
+                                rememberAsyncImagePainter(
+                                    model =
+                                    ImageRequest
+                                        .Builder(LocalContext.current)
                                         .data(it.imageSet?.verticalPoster?.w240)
                                         .apply { crossfade(true) }
-                                        .build()
+                                        .build(),
                                 ),
                                 contentDescription = "Film image",
-                                modifier = Modifier
+                                modifier =
+                                Modifier
                                     .fillMaxSize()
                                     .background(colorResource(id = R.color.black))
                                     .clickable {
                                         navController.navigate("detail/${it.id}")
-                                    }
-                                ,
+                                    },
                                 contentScale = ContentScale.Crop,
                             )
                             RatingFloatingButton(
@@ -146,7 +146,7 @@ fun HomeScreenComponents(
                     contentDescription = "Amazon",
                     modifier = Modifier
                         .clickable {  }
-                        .size(128.dp, 64.dp)
+                        .size(128.dp,  64.dp),
                 )
 
                 LazyRow(modifier = Modifier.padding(8.dp)) {

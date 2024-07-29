@@ -6,15 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -29,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -45,7 +40,7 @@ import java.util.Locale
 @Composable
 fun NewShowsScreen(
     newShowsViewModel: NewShowsViewModel,
-    navController: NavController
+    navController: NavController,
 ) {
     val state by newShowsViewModel.state.collectAsState()
 
@@ -74,11 +69,11 @@ fun NewShowsScreen(
 @Composable
 fun NewShowsScreenComponents(
     responseRepository: List<ResponseRemoteUI>,
-    navController: NavController
+    navController: NavController,
 ) {
     // Box
-    val sizeBoxWidth = 300.dp
-    val sizeBoxHeight = 300.dp
+    val sizeBoxWidth = 250.dp
+    val sizeBoxHeight = 350.dp
     //
     // FloatingActionButton Ratings
     val sizeWidth = 45
@@ -89,84 +84,102 @@ fun NewShowsScreenComponents(
     val fontColor = Color.White
 
     Box(
-        modifier = Modifier.background(colorResource(id = R.color.black))
+        modifier =
+        Modifier
+            .background(colorResource(id = R.color.black)),
     ) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+            Modifier
+                .fillMaxSize(),
         ) {
             // Items from responseRepository
             items(responseRepository) { item ->
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(sizeBoxWidth, sizeBoxHeight)
-                        .clip(RoundedCornerShape(16.dp))
-                ) {
-
-                    Image(
-                        painter = rememberAsyncImagePainter(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(item.imageSet?.verticalPoster?.w240)
-                                .apply { crossfade(true) }
-                                .build()
-                        ),
-                        contentDescription = "Film image",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(colorResource(id = R.color.black))
-                            .clickable {
-                                navController.navigate("detail/${item.id}")
-                            },
-                        contentScale = ContentScale.Crop,
-                    )
-                    RatingFloatingButton(
-                        text = item.rating.toString(),
-                        sizeWidth = sizeWidth,
-                        sizeHeight = sizeHeight,
-                        paddingStart = paddingStart,
-                        paddingBottom = paddingBottom,
-                        fontSize = fontSize,
-                        fontColor = fontColor,
-                        modifier = Modifier.align(Alignment.BottomStart)
-                    )
-                }
-
                 Column(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxWidth()
+                        .padding(8.dp),
                 ) {
-                    item.streamingOptions.us.forEach { streamingOption ->
-                        Text(
-                            text = "Plataform: ${streamingOption.service.name}"
+                    Box(
+                        modifier =
+                        Modifier
+                            .padding(8.dp)
+                            .size(sizeBoxWidth, sizeBoxHeight)
+                            .clip(RoundedCornerShape(16.dp))
+                            .align(Alignment.CenterHorizontally), // Centering the box within the column
+                    ) {
+                        Image(
+                            painter =
+                            rememberAsyncImagePainter(
+                                model =
+                                ImageRequest
+                                    .Builder(LocalContext.current)
+                                    .data(item.imageSet?.verticalPoster?.w240)
+                                    .apply { crossfade(true) }
+                                    .build(),
+                            ),
+                            contentDescription = "Film image",
+                            modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .background(colorResource(id = R.color.black))
+                                .clickable {
+                                    navController.navigate("detail/${item.id}")
+                                },
+                            contentScale = ContentScale.FillBounds,
                         )
-
-                        if (streamingOption.type != "null") {
-                            Text(
-                                text = "Service: ${streamingOption.type.toString()}",
-                                modifier = Modifier.size(100.dp,20.dp)
-                            )
-
-                        }
-                        if(streamingOption.price != null) {
-
-                            Text(
-                                text = "Amount: ${streamingOption.price?.amount.toString()}"
-                            )
-                        }
-                        Text(text = "Date:${convertTimestampToReadableDate(streamingOption.availableSince)}")
-
-                        Text("--------------------------------")
+                        RatingFloatingButton(
+                            text = item.rating.toString(),
+                            sizeWidth = sizeWidth,
+                            sizeHeight = sizeHeight,
+                            paddingStart = paddingStart,
+                            paddingBottom = paddingBottom,
+                            fontSize = fontSize,
+                            fontColor = fontColor,
+                            modifier = Modifier.align(Alignment.BottomStart),
+                        )
                     }
 
+                    Column(
+                        modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(64.dp, 0.dp)
+                            .align(Alignment.CenterHorizontally),
+                    ) {
+                        item.streamingOptions.us.forEach { streamingOption ->
+                            Text(
+                                text = "Platform: ${streamingOption.service.name}",
+                            )
 
+                            if (streamingOption.type != "null" &&
+                                streamingOption.price
+                                    .toString()
+                                    .isNotEmpty()
+                            ) {
+                                Text(
+                                    text = "Service: ${streamingOption.type}",
+                                )
+                            }
+                            if (streamingOption.price != null) {
+                                Text(
+                                    text = "Amount: ${streamingOption.price?.amount}",
+                                )
+                            }
+                            Text(
+                                text = "Date: ${convertTimestampToReadableDate(streamingOption.availableSince)}",
+                            )
+                            Text(
+                                text = "--------------------------------",
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 }
-
-
 
 fun convertTimestampToReadableDate(timestamp: Long): String {
     val date = Date(timestamp * 1000)

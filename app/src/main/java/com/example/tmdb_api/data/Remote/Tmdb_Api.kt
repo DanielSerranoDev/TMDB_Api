@@ -7,18 +7,16 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface Tmdb_Api {
-
-
     //Netflix-rating descending
-    @GET("shows/search/filters?country=us&series_granularity=episode&order_direction=desc&order_by=original_title&genres_relation=and&output_language=en&catalogs=netflix")
+    @GET("shows/search/filters?country=us&year_max=2020&series_granularity=episode&year_min=2020&genres_relation=and&output_language=en&catalogs=netflix&show_type=movie")
     suspend fun getNetflixRatings(): APIResponse
 
     //Amazon Prime-rating descending
-    @GET("shows/search/filters?country=us&series_granularity=episode&order_direction=desc&order_by=original_title&genres_relation=and&output_language=en&catalogs=prime.subscription")
+    @GET("shows/search/filters?country=us&year_max=2020&series_granularity=episode&year_min=2020&genres_relation=and&output_language=en&catalogs=prime.subscription&show_type=movie")
     suspend fun getAmazonPrimRatings(): APIResponse
 
     //Hbo Max-rating descending
-    @GET("shows/search/filters?country=us&series_granularity=episode&order_direction=desc&order_by=original_title&genres_relation=and&output_language=en&catalogs=hbo%2Chulu.addon.hbo%2Cprime.addon.hbomaxus")
+    @GET("shows/search/filters?country=us&year_max=2020&series_granularity=episode&year_min=2020&genres_relation=and&output_language=en&catalogs=hbo%2Chulu.addon.hbo%2Cprime.addon.hbomaxus&show_type=movie")
     suspend fun getHboMaxRatings(): APIResponse
 
     @GET("changes?change_type=new&country=us&item_type=show&output_language=en&order_direction=asc&include_unknown_dates=false&catalogs=prime.subscription%2Cnetflix%2Chbo%2Chulu.addon.hbo%2Cprime.addon.hbomaxus")
@@ -35,11 +33,8 @@ interface Tmdb_Api {
     suspend fun getActionMovies(): APIResponse
      */
 
-
     @GET("shows/{id}?output_language=en")
     suspend fun getShowDetails(
         @Path("id") id: String
     ): Show
-
-
 }

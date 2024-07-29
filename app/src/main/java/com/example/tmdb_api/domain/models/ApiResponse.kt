@@ -1,12 +1,12 @@
 package com.example.tmdb_api.domain.models
 
-data class APIResponse (
+data class APIResponse(
     val shows: List<Show>,
     val hasMore: Boolean,
-    val nextCursor: String
+    val nextCursor: String,
 )
 
-data class Show (
+data class Show(
     val itemType: String,
     val showType: String,
     val id: String,
@@ -26,65 +26,63 @@ data class Show (
     val lastAirYear: Long? = null,
     val creators: List<String>? = null,
     val seasonCount: Long? = null,
-    val episodeCount: Long? = null
+    val episodeCount: Long? = null,
 )
 
-data class Genre (
+data class Genre(
     val id: String,
-    val name: String
+    val name: String,
 )
 
-data class ShowImageSet (
+data class ShowImageSet(
     val verticalPoster: Vertical,
     val horizontalPoster: Horizontal,
     val verticalBackdrop: VerticalBackdrop?,
     val horizontalBackdrop: HorizontalBackdrop?,
-
 )
 
-data class HorizontalBackdrop (
+data class HorizontalBackdrop(
     val w360: String,
     val w480: String,
     val w720: String,
     val w1080: String,
-    val w1440: String
+    val w1440: String,
 )
 
-data class VerticalBackdrop (
+data class VerticalBackdrop(
     val w240: String,
     val w360: String,
     val w480: String,
     val w600: String,
-    val w720: String
+    val w720: String,
 )
 
-data class Horizontal (
+data class Horizontal(
     val w360: String,
     val w480: String,
     val w720: String,
     val w1080: String,
-    val w1440: String
+    val w1440: String,
 )
 
-data class Vertical (
+data class Vertical(
     val w240: String,
     val w360: String,
     val w480: String,
     val w600: String,
-    val w720: String
+    val w720: String,
 )
-
 
 enum class ShowType {
     Movie,
-    Series
+    Series,
 }
 
-data class StreamingOptions (
-    val us: List<Me>
+data class StreamingOptions(
+    val us: List<Me>,
 )
 
-data class Me (
+data class Me(
     val service: Addon,
     val type: String? = null,
     val link: String,
@@ -96,45 +94,45 @@ data class Me (
     val availableSince: Long,
     val addon: Addon? = null,
     val price: Price? = null,
-    val expiresOn: Long? = null
+    val expiresOn: Long? = null,
 )
 
-data class Addon (
+data class Addon(
     val id: String,
     val name: String,
     val homePage: String,
     val themeColorCode: String,
-    val imageSet: AddonImageSet
+    val imageSet: AddonImageSet,
 )
 
-data class AddonImageSet (
+data class AddonImageSet(
     val lightThemeImage: String,
     val darkThemeImage: String,
-    val whiteImage: String
+    val whiteImage: String,
 )
 
-data class Audio (
+data class Audio(
     val language: String,
-    val region: String? = null
+    val region: String? = null,
 )
 
-data class Price (
+data class Price(
     val amount: String,
     val currency: String,
-    val formatted: String
+    val formatted: String,
 )
 
 enum class Currency {
-    Usd
+    Usd,
 }
 
 enum class Quality {
     HD,
     SD,
-    Uhd
+    Uhd,
 }
 
-data class Subtitle (
+data class Subtitle(
     val closedCaptions: Boolean,
-    val locale: Audio
+    val locale: Audio,
 )

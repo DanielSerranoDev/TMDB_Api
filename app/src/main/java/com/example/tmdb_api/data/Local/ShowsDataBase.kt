@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.tmdb_api.domain.models.ResponseLocalUI
 
-
 @Database(entities = [ResponseLocalUI::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class ShowsDataBase : RoomDatabase() {

@@ -27,11 +27,12 @@ fun RatingFloatingButton(
     paddingBottom: Int,
     fontSize: Int,
     fontColor: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .padding(start = paddingStart.dp, bottom = paddingBottom.dp)
+        modifier =
+            modifier
+                .padding(start = paddingStart.dp, bottom = paddingBottom.dp),
     ) {
         SmallFloatingActionButton(
             onClick = { /*TODO*/ },
@@ -40,13 +41,12 @@ fun RatingFloatingButton(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-
-            ){
+            ) {
                 Icon(
-                    imageVector= Icons.Default.Star,
+                    imageVector = Icons.Default.Star,
                     contentDescription = "start rating",
                     modifier = Modifier,
-                    tint = Color.Yellow
+                    tint = Color.Yellow,
                 )
                 Text(
                     text = text,
@@ -54,9 +54,7 @@ fun RatingFloatingButton(
                     fontWeight = FontWeight.Bold,
                     fontSize = fontSize.sp,
                 )
-
             }
-
         }
     }
 }

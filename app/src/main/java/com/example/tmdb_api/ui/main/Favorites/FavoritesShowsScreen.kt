@@ -7,12 +7,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun FavoritesShowsScreen() {
-
     Text(
         text = "Favorites Shows",
-        fontSize = 20.sp
+        fontSize = 20.sp,
     )
-
 }
 
 @Preview

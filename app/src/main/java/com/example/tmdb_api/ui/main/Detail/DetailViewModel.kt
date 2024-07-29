@@ -16,57 +16,52 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(
-    private val repository: Repository
-): ViewModel() {
+class DetailViewModel
+    @Inject
+    constructor(
+        private val repository: Repository,
+    ) : ViewModel() {
+        private val _state: MutableStateFlow<DetailState> = MutableStateFlow(DetailState.Idle)
+        val state: StateFlow<DetailState> = _state.asStateFlow()
 
-    private val _state: MutableStateFlow<DetailState> = MutableStateFlow(DetailState.Idle)
-    val state: StateFlow<DetailState> = _state.asStateFlow()
+        fun getDetail(id: String) {
+            viewModelScope.launch {
+                _state.update { DetailState.Idle }
 
-    fun getDetail(id: String) {
-
-        viewModelScope.launch {
-            _state.update { DetailState.Idle }
-
-            val show = runCatching {
-                withContext(Dispatchers.IO) {
-                    repository.getShowsIdRm(id)
+                val show =
+                    runCatching {
+                        withContext(Dispatchers.IO) {
+                            repository.getShowsIdRm(id)
+                        }
+                    }
+                if (show.isSuccess) {
+                    _state.update { DetailState.Success(show.getOrThrow()) }
+                } else {
+                    _state.update { DetailState.Error(show.exceptionOrNull()?.message.orEmpty()) }
                 }
             }
-            if(show.isSuccess){
-                _state.update { DetailState.Success(show.getOrThrow()) }
-            } else {
-                _state.update { DetailState.Error(show.exceptionOrNull()?.message.orEmpty()) }
-                }
-
         }
-    }
 
-    fun insertShow(responseRepository: ResponseRemoteUI?) {
-        viewModelScope.launch {
-            val showDB= withContext(Dispatchers.IO) {
-                repository.insertShow(responseRepository!!)
+        fun insertShow(responseRepository: ResponseRemoteUI?) {
+            viewModelScope.launch {
+                val showDB =
+                    withContext(Dispatchers.IO) {
+                        repository.insertShow(responseRepository!!)
+                    }
             }
         }
 
-    }
+        suspend fun getShowById(id: String): ResponseLocalUI =
+            withContext(Dispatchers.IO) {
+                repository.getShowIdDB(id)
+            }
 
-   suspend fun getShowById(id: String): ResponseLocalUI {
-        return withContext(Dispatchers.IO) {
-            repository.getShowIdDB(id)
-        }
-
-   }
-
-
-
-    fun deleteShow(id: String) {
-        viewModelScope.launch {
-            val showDB = withContext(Dispatchers.IO) {
-                repository.deleteShow(id)
+        fun deleteShow(id: String) {
+            viewModelScope.launch {
+                val showDB =
+                    withContext(Dispatchers.IO) {
+                        repository.deleteShow(id)
+                    }
             }
         }
     }
-
-
-}

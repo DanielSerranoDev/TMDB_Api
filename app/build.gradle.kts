@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+
 }
 
 android {
@@ -27,7 +29,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -62,10 +64,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+
     implementation("androidx.compose.material:material-icons-extended:1.7.0-beta01")
 
     // Navigation Compose
-    implementation ("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -73,7 +76,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
-    implementation ("com.squareup.moshi:moshi:1.14.0")
+    implementation("com.squareup.moshi:moshi:1.14.0")
 
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48")
@@ -81,20 +84,20 @@ dependencies {
     kapt("androidx.room:room-compiler:2.4.3")
     kapt("com.google.dagger:hilt-compiler:2.48")
 
-    //Gson
-    implementation ("com.google.code.gson:gson:2.10.1")
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // Async Image
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-//ROOM
-    implementation ("androidx.room:room-runtime:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
-    implementation ("androidx.room:room-paging:2.6.1")
+// ROOM
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.room:room-paging:2.6.1")
 
 // Paging 3.0
-    implementation ("androidx.paging:paging-compose:1.0.0-alpha15")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha15")
 
     // Test
     testImplementation(libs.junit)
@@ -105,4 +108,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    ktlintRuleset ("com.twitter.compose.rules:ktlint:<VERSION>")
 }

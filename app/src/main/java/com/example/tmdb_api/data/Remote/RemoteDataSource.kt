@@ -4,35 +4,39 @@ import android.util.Log
 import com.example.tmdb_api.domain.models.Show
 import javax.inject.Inject
 
-class RemoteDataSource@Inject constructor(private val api: Tmdb_Api) {
+class
+RemoteDataSource@Inject
+    constructor(
+        private val api: Tmdb_Api,
+    ) {
+        suspend fun getNetflixRatings(): List<Show> {
+            val responseApi = api.getNetflixRatings()
+            Log.w("TAG", "getNetflixRatings: $responseApi")
+            val response = responseApi.shows
+            return response
+        }
 
-    suspend fun getNetflixRatings(): List<Show> {
-        val responseApi = api.getNetflixRatings()
-        Log.w("TAG", "getNetflixRatings: $responseApi")
-        val response = responseApi.shows
-        return response
-    }
+        suspend fun getAmazonPrimeRatings(): List<Show> {
+            val responseApi = api.getAmazonPrimRatings()
+            Log.w("TAG", "getPrimeRatings: $responseApi")
+            val response = responseApi.shows
+            return response
+        }
 
-    suspend fun getAmazonPrimeRatings(): List<Show> {
-        val responseApi = api.getAmazonPrimRatings()
-        Log.w("TAG", "getPrimeRatings: $responseApi")
-        val response = responseApi.shows
-        return response
-    }
+        suspend fun getHboMaxRatings(): List<Show> {
+            val responseApi = api.getHboMaxRatings()
+            Log.w("TAG", "getHboMaxRatings: $responseApi")
+            val response = responseApi.shows
+            return response
+        }
 
-    suspend fun getHboMaxRatings(): List<Show> {
-        val responseApi = api.getHboMaxRatings()
-        Log.w("TAG", "getHboMaxRatings: $responseApi")
-        val response = responseApi.shows
-        return response
-    }
+        suspend fun getNewChange(): Collection<Show> {
+            val responseApi = api.getNewChanges()
+            Log.w("TAG", "getNewChange: $responseApi")
+            val response = responseApi.shows.values
+            return response
+        }
 
-    suspend fun getNewChange(): Collection<Show> {
-        val responseApi = api.getNewChanges()
-        Log.w("TAG", "getNewChange: $responseApi")
-        val response = responseApi.shows.values
-        return response
-    }
     /*
     suspend fun getSciFiMovies(): List<Show> {
         val responseApi = api.getScifiMovies()
@@ -57,11 +61,10 @@ class RemoteDataSource@Inject constructor(private val api: Tmdb_Api) {
 
 
      */
-    suspend fun getShowById(id: String): Show {
-        val responseApi = api.getShowDetails(id)
-        Log.w("TAG", "getShowById: $responseApi")
+        suspend fun getShowById(id: String): Show {
+            val responseApi = api.getShowDetails(id)
+            Log.w("TAG", "getShowById: $responseApi")
 
-        return responseApi
+            return responseApi
+        }
     }
-
-}

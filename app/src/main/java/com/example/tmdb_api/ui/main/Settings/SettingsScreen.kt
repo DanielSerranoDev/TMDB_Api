@@ -7,10 +7,9 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun SettingsScreen() {
-
     Text(
         text = "Settings Screen",
-        fontSize = 20.sp
+        fontSize = 20.sp,
     )
 }
 

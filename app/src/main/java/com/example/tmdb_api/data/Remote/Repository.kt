@@ -24,100 +24,94 @@ data class ResponseRepositoryByCatalog(
     val hboMaxRatings: List<ResponseRemoteUI>,
 )
 
-class Repository @Inject constructor(
-    private val remoteDataSource: RemoteDataSource,
-    private val responseRemoteListToUIListMapper: ResponseRemoteListToUIListMapper,
-    private val responseRemoteShowToUIShowMapper: ResponseRemoteShowToUIShowMapper,
-    private val responseRemoteUIToLocalUIMapper: ResponseRemoteUIToLocalUIMapper,
-    private val responseLocalUIToRemoteUIMapper: ResponseLocalUIToRemoteUIMapper,
-    private val localDataSourceInterface: LocalDataSourceInterface
-) {
-
-    private suspend fun getNetflixRatings(): List<ResponseRemoteUI> {
-        try {
-            Log.d("Repository", "Fetching movies/series...")
-            val responseRemote = remoteDataSource.getNetflixRatings()
-            Log.d("Repository", "Movies/Series fetched successfully")
-            Log.w("Repository", responseRemote.toString())
-            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
-            return convertResponseToRemoteUI
-        } catch (e: Exception) {
-            Log.e("Repository", "Error fetching movies", e)
-            return emptyList() // Or handle the error as needed
-        }
-    }
-
-    private suspend fun getAmazonPrimeRatings(): List<ResponseRemoteUI> {
-        try {
-            Log.d("Repository", "Fetching movies/series...")
-            val responseRemote = remoteDataSource.getAmazonPrimeRatings()
-            Log.d("Repository", "Movies/Series fetched successfully")
-            Log.w("Repository", responseRemote.toString())
-            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
-
-            return convertResponseToRemoteUI
-        } catch (e: Exception) {
-            Log.e("Repository", "Error fetching movies", e)
-            return emptyList() // Or handle the error as needed
-        }
-    }
-
-    private suspend fun getHboMaxRatings(): List<ResponseRemoteUI> {
-        try {
-            Log.d("Repository", "Fetching movies/series...")
-            val responseRemote = remoteDataSource.getHboMaxRatings()
-            Log.d("Repository", "Movies/Series fetched successfully")
-            Log.w("Repository", responseRemote.toString())
-            val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
-
-            return convertResponseToRemoteUI
-        } catch (e: Exception) {
-            Log.e("Repository", "Error fetching movies", e)
-            return emptyList() // Or handle the error as needed
-        }
-    }
-
-    suspend fun getNewChange(): List<ResponseRemoteUI>{
-        val responseRemote = remoteDataSource.getNewChange().toList()
-        Log.d("Repository", "Movies/Series updated fetched successfully")
-        Log.w("Repository", responseRemote.toString())
-        return responseRemoteListToUIListMapper.map(responseRemote)
-    }
-
-    suspend fun repositoryResponseByCatalog(): ResponseRepositoryByCatalog {
-
-        val netflixRatings = getNetflixRatings()
-        val amazonPrimeRatings = getAmazonPrimeRatings()
-        val hboMaxRatings = getHboMaxRatings()
-
-        return ResponseRepositoryByCatalog(netflixRatings, amazonPrimeRatings, hboMaxRatings)
-    }
-
-    suspend fun getShowsIdRm(id: String): ResponseRemoteUI? {
-
-                Log.d("Repository", "Fetching Series...")
-                val responseRemote = remoteDataSource.getShowById(id)
-                Log.d("Repository", "Series fetched successfully")
+class Repository
+    @Inject
+    constructor(
+        private val remoteDataSource: RemoteDataSource,
+        private val responseRemoteListToUIListMapper: ResponseRemoteListToUIListMapper,
+        private val responseRemoteShowToUIShowMapper: ResponseRemoteShowToUIShowMapper,
+        private val responseRemoteUIToLocalUIMapper: ResponseRemoteUIToLocalUIMapper,
+        private val responseLocalUIToRemoteUIMapper: ResponseLocalUIToRemoteUIMapper,
+        private val localDataSourceInterface: LocalDataSourceInterface,
+    ) {
+        private suspend fun getNetflixRatings(): List<ResponseRemoteUI> {
+            try {
+                Log.d("Repository", "Fetching movies/series...")
+                val responseRemote = remoteDataSource.getNetflixRatings()
+                Log.d("Repository", "Movies/Series fetched successfully")
                 Log.w("Repository", responseRemote.toString())
-        return responseRemoteShowToUIShowMapper.map(responseRemote)
+                val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
+                return convertResponseToRemoteUI
+            } catch (e: Exception) {
+                Log.e("Repository", "Error fetching movies", e)
+                return emptyList() // Or handle the error as needed
+            }
+        }
 
-    }
+        private suspend fun getAmazonPrimeRatings(): List<ResponseRemoteUI> {
+            try {
+                Log.d("Repository", "Fetching movies/series...")
+                val responseRemote = remoteDataSource.getAmazonPrimeRatings()
+                Log.d("Repository", "Movies/Series fetched successfully")
+                Log.w("Repository", responseRemote.toString())
+                val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
 
-    suspend fun getShowIdDB(id: String): ResponseLocalUI {
+                return convertResponseToRemoteUI
+            } catch (e: Exception) {
+                Log.e("Repository", "Error fetching movies", e)
+                return emptyList() // Or handle the error as needed
+            }
+        }
 
-        return withContext(Dispatchers.IO) {
-            localDataSourceInterface.getShowIdDB(id)
+        private suspend fun getHboMaxRatings(): List<ResponseRemoteUI> {
+            try {
+                Log.d("Repository", "Fetching movies/series...")
+                val responseRemote = remoteDataSource.getHboMaxRatings()
+                Log.d("Repository", "Movies/Series fetched successfully")
+                Log.w("Repository", responseRemote.toString())
+                val convertResponseToRemoteUI = responseRemoteListToUIListMapper.map(responseRemote)
+
+                return convertResponseToRemoteUI
+            } catch (e: Exception) {
+                Log.e("Repository", "Error fetching movies", e)
+                return emptyList() // Or handle the error as needed
+            }
+        }
+
+        suspend fun getNewChange(): List<ResponseRemoteUI> {
+            val responseRemote = remoteDataSource.getNewChange().toList()
+            Log.d("Repository", "Movies/Series updated fetched successfully")
+            Log.w("Repository", responseRemote.toString())
+            return responseRemoteListToUIListMapper.map(responseRemote)
+        }
+
+        suspend fun repositoryResponseByCatalog(): ResponseRepositoryByCatalog {
+            val netflixRatings = getNetflixRatings()
+            val amazonPrimeRatings = getAmazonPrimeRatings()
+            val hboMaxRatings = getHboMaxRatings()
+
+            return ResponseRepositoryByCatalog(netflixRatings, amazonPrimeRatings, hboMaxRatings)
+        }
+
+        suspend fun getShowsIdRm(id: String): ResponseRemoteUI? {
+            Log.d("Repository", "Fetching Series...")
+            val responseRemote = remoteDataSource.getShowById(id)
+            Log.d("Repository", "Series fetched successfully")
+            Log.w("Repository", responseRemote.toString())
+            return responseRemoteShowToUIShowMapper.map(responseRemote)
+        }
+
+        suspend fun getShowIdDB(id: String): ResponseLocalUI =
+            withContext(Dispatchers.IO) {
+                localDataSourceInterface.getShowIdDB(id)
+            }
+
+        fun insertShow(show: ResponseRemoteUI) {
+            val remoteShowUIToLocalShowUI = responseRemoteUIToLocalUIMapper.mapShow(show)
+            localDataSourceInterface.insertShows(remoteShowUIToLocalShowUI)
+        }
+
+        fun deleteShow(id: String) {
+            localDataSourceInterface.deleteShow(id)
         }
     }
-
-    fun insertShow(show: ResponseRemoteUI) {
-        val remoteShowUIToLocalShowUI = responseRemoteUIToLocalUIMapper.mapShow(show)
-        localDataSourceInterface.insertShows(remoteShowUIToLocalShowUI)
-    }
-
-
-    fun deleteShow(id: String){
-        localDataSourceInterface.deleteShow(id)
-    }
-
-}

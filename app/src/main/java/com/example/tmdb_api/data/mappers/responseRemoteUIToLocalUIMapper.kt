@@ -4,25 +4,22 @@ import com.example.tmdb_api.domain.models.ResponseLocalUI
 import com.example.tmdb_api.domain.models.ResponseRemoteUI
 import javax.inject.Inject
 
-class ResponseRemoteUIToLocalUIMapper @Inject constructor() {
+class ResponseRemoteUIToLocalUIMapper
+    @Inject
+    constructor() {
+        fun mapShowList(responseRemote: List<ResponseRemoteUI>): List<ResponseLocalUI> =
+            responseRemote.map {
+                ResponseLocalUI(
+                    it.id,
+                    it.title,
+                    it.imageSet,
+                )
+            }
 
-    fun mapShowList(responseRemote: List<ResponseRemoteUI>): List<ResponseLocalUI> {
-        return responseRemote.map {
+        fun mapShow(responseRemote: ResponseRemoteUI): ResponseLocalUI =
             ResponseLocalUI(
-                it.id,
-                it.title,
-                it.imageSet
+                responseRemote.id,
+                responseRemote.title,
+                responseRemote.imageSet,
             )
-        }
     }
-
-    fun mapShow(responseRemote: ResponseRemoteUI): ResponseLocalUI {
-        return ResponseLocalUI(
-            responseRemote.id,
-            responseRemote.title,
-            responseRemote.imageSet
-        )
-    }
-
-
-}

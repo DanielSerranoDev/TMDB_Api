@@ -15,23 +15,20 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 class LocalModule {
+    @Provides
+    fun providesDataBase(
+        @ApplicationContext context: Context,
+    ): ShowsDataBase =
+        Room
+            .databaseBuilder(
+                context,
+                ShowsDataBase::class.java,
+                "tmdb_database",
+            ).build()
 
     @Provides
-    fun providesDataBase(@ApplicationContext context: Context): ShowsDataBase {
-        return Room.databaseBuilder(
-            context,
-            ShowsDataBase::class.java, "tmdb_database"
-        ).build()
-    }
+    fun providesShowDao(db: ShowsDataBase): ShowDAO = db.showDAO()
 
     @Provides
-    fun providesShowDao(db: ShowsDataBase): ShowDAO{
-        return db.showDAO()
-    }
-
-
-    @Provides
-    fun providesLocalDataSourceInterface(localDataSource: LocalDataSource): LocalDataSourceInterface {
-        return localDataSource
-    }
+    fun providesLocalDataSourceInterface(localDataSource: LocalDataSource): LocalDataSourceInterface = localDataSource
 }

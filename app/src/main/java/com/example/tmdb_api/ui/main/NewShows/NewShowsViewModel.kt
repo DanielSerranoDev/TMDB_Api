@@ -1,6 +1,5 @@
 package com.example.tmdb_api.ui.main.NewShows
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tmdb_api.data.Remote.Repository
@@ -15,34 +14,30 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class NewShowsViewModel @Inject constructor(
-    private val repository: Repository
-): ViewModel() {
+class NewShowsViewModel
+    @Inject
+    constructor(
+        private val repository: Repository,
+    ) : ViewModel() {
+        private val _state: MutableStateFlow<NewShowsStates> = MutableStateFlow(NewShowsStates.Idle)
+        val state: StateFlow<NewShowsStates> = _state.asStateFlow()
 
-    private val _state: MutableStateFlow<NewShowsStates> = MutableStateFlow(NewShowsStates.Idle)
-    val state: StateFlow<NewShowsStates> = _state.asStateFlow()
+        fun getRepositoryData() {
+            viewModelScope.launch {
+                _state.update { NewShowsStates.Idle }
 
-    fun getRepositoryData(){
-
-        viewModelScope.launch {
-            _state.update { NewShowsStates.Idle }
-
-            val response = runCatching {
-                withContext(Dispatchers.IO) {
-                    //Log.w("Repository", "NewShowsScreen in viewModel")
-                    repository.getNewChange()
-
+                val response =
+                    runCatching {
+                        withContext(Dispatchers.IO) {
+                            // Log.w("Repository", "NewShowsScreen in viewModel")
+                            repository.getNewChange()
+                        }
+                    }
+                if (response.isSuccess) {
+                    _state.update { NewShowsStates.Success(response.getOrThrow()) }
+                } else {
+                    _state.update { NewShowsStates.Error(response.exceptionOrNull()?.message.orEmpty()) }
                 }
-            }
-            if (response.isSuccess) {
-                _state.update { NewShowsStates.Success(response.getOrThrow()) }
-            } else {
-                _state.update { NewShowsStates.Error(response.exceptionOrNull()?.message.orEmpty()) }
             }
         }
     }
-
-
-
-
-}
