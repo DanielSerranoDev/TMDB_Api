@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,8 +25,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -70,16 +76,17 @@ fun HomeScreenComponents(
     navController: NavController,
 ) {
     //Box
-    val sizeBoxWidth = 190.dp
-    val sizeBoxHeight = 250.dp
+    val sizeBoxWidth = 170.dp
+    val sizeBoxHeight = 240.dp
     //
     //FloatingActionButton Ratings
     val sizeWidth = 45
     val sizeHeight = 22
-    val paddingStart = 8
-    val paddingBottom = 8
+    val paddingStart = 6
+    val paddingBottom = 6
     val fontSize = 14
     val fontColor = Color.White
+    val paddingBehindElements = 4
 
 
     Box(
@@ -88,20 +95,37 @@ fun HomeScreenComponents(
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             //First item
             item {
-                Image(
-                    painter = painterResource(id = R.drawable.netflix),
-                    contentDescription = "Netflix",
-                    modifier = Modifier
-                        .clickable {  }
-                        .size(128.dp,64.dp),
-                )
 
+                Row {
+                    Text(
+                        text = "The best ratings from ",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Normal,
+                            fontSize = 19.sp
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .padding(16.dp)
+                    )
+
+                    Image(
+                        painter = painterResource(id = R.drawable.netflix),
+                        contentDescription = "Netflix",
+                        modifier = Modifier
+                            .clickable { }
+                            .size(128.dp, 64.dp),
+                    )
+
+                }
                 LazyRow(modifier = Modifier.padding(8.dp)) {
                     items(movies) {
                         Box(
                             modifier =
                             Modifier
-                                .padding(8.dp)
+                                .padding(paddingBehindElements.dp)
                                 .size(sizeBoxWidth, sizeBoxHeight)
                                 .clip(RoundedCornerShape(16.dp)),
                         ) {
@@ -141,19 +165,38 @@ fun HomeScreenComponents(
             }
             //Second item
             item {
-                Image(
-                    painter = painterResource(id = R.drawable.amazon),
-                    contentDescription = "Amazon",
-                    modifier = Modifier
-                        .clickable {  }
-                        .size(128.dp,  64.dp),
-                )
+
+                Row {
+                    Text(
+                        text = "The selections from   ",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Normal,
+                            fontSize = 19.sp
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .padding(16.dp)
+                    )
+
+                    Image(
+                        painter = painterResource(id = R.drawable.amazon),
+                        contentDescription = "Amazon",
+                        modifier = Modifier
+                            .clickable {  }
+                            .size(128.dp,  64.dp),
+                    )
+
+                }
+
 
                 LazyRow(modifier = Modifier.padding(8.dp)) {
                     items(series) {
                         Box(
                             modifier = Modifier
-                                .padding(8.dp)
+                                .padding(paddingBehindElements.dp)
                                 .size(sizeBoxWidth, sizeBoxHeight)
                                 .clip(RoundedCornerShape(16.dp))
                         ) {
@@ -189,20 +232,38 @@ fun HomeScreenComponents(
             }
             //First third
             item {
-                Image(
-                    painter = painterResource(id = R.drawable.hbologo),
-                    contentDescription = "HboMax",
-                    modifier = Modifier
-                        .clickable {  }
-                        .size(100.dp, 64.dp)
-                        .padding(38.dp, 8.dp,0.dp,0.dp)
-                )
+
+                Row {
+                    Text(
+                        text = "The top from               ",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Normal,
+                            fontSize = 19.sp
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .padding(16.dp)
+                    )
+
+                    Image(
+                        painter = painterResource(id = R.drawable.hbologo),
+                        contentDescription = "HboMax",
+                        modifier = Modifier
+                            .clickable {  }
+                            .size(100.dp, 64.dp)
+                            .padding(38.dp, 8.dp,0.dp,0.dp)
+                    )
+
+                }
 
                 LazyRow(modifier = Modifier.padding(8.dp)) {
                     items(moviesAction) {
                         Box(
                             modifier = Modifier
-                                .padding(8.dp)
+                                .padding(paddingBehindElements.dp)
                                 .size(sizeBoxWidth, sizeBoxHeight)
                                 .clip(RoundedCornerShape(16.dp))
                         ) {

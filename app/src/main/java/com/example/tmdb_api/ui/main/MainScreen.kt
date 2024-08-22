@@ -1,6 +1,8 @@
 package com.example.tmdb_api.ui.main
 
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +63,14 @@ fun MainScreen(
                 selectedScreen,
             )
         },
-        bottomBar = { BottomBar { screen -> selectedScreen = screen } },
+        bottomBar = {
+            BottomBar(
+                selectedScreen = selectedScreen,
+                onScreenSelected = { screen -> selectedScreen = screen },
+                selectedIconColor = Color.Black,
+                unselectedIconColor = Color.LightGray
+            )
+        },
     )
 }
 
@@ -68,7 +78,15 @@ fun MainScreen(
 @Composable
 fun TopBar() {
     TopAppBar(
-        title = { Text(text = "TMDB_API", fontSize = 30.sp, color = Color.White) },
+        title = {
+            Image(
+                painter = painterResource(id = R.drawable.tmdb),
+                contentDescription = "tmdb logo",
+                modifier = Modifier
+                    .clickable {  }
+                    .size(100.dp, 40.dp)
+            )
+                },
         colors =
             TopAppBarDefaults.topAppBarColors(
                 containerColor = colorResource(id = R.color.backgroundBars),
@@ -109,13 +127,18 @@ fun Content(
 }
 
 @Composable
-fun BottomBar(onScreenSelected: (String) -> Unit) {
+fun BottomBar(
+    selectedScreen: String,
+    onScreenSelected: (String) -> Unit,
+    selectedIconColor: Color,
+    unselectedIconColor: Color
+) {
     BottomAppBar(
         containerColor = colorResource(id = R.color.backgroundBars),
         contentColor = Color.White,
     ) {
         NavigationBarItem(
-            selected = false,
+            selected = selectedScreen == "HomeScreen",
             onClick = { onScreenSelected("HomeScreen") },
             icon = {
                 Column(
@@ -130,9 +153,13 @@ fun BottomBar(onScreenSelected: (String) -> Unit) {
                     Text(text = "Home")
                 }
             },
+            colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+                selectedIconColor = selectedIconColor,
+                unselectedIconColor = unselectedIconColor
+            )
         )
         NavigationBarItem(
-            selected = false,
+            selected = selectedScreen == "NewShowsScreen",
             onClick = { onScreenSelected("NewShowsScreen") },
             icon = {
                 Column(
@@ -144,12 +171,16 @@ fun BottomBar(onScreenSelected: (String) -> Unit) {
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
                     )
-                    Text(text = "Nuevo")
+                    Text(text = "New")
                 }
             },
+            colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+                selectedIconColor = selectedIconColor,
+                unselectedIconColor = unselectedIconColor
+            )
         )
         NavigationBarItem(
-            selected = false,
+            selected = selectedScreen == "FavoritesShowsScreen",
             onClick = { onScreenSelected("FavoritesShowsScreen") },
             icon = {
                 Column(
@@ -164,9 +195,13 @@ fun BottomBar(onScreenSelected: (String) -> Unit) {
                     Text(text = "Favorites")
                 }
             },
+            colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+                selectedIconColor = selectedIconColor,
+                unselectedIconColor = unselectedIconColor
+            )
         )
         NavigationBarItem(
-            selected = false,
+            selected = selectedScreen == "SettingsScreen",
             onClick = { onScreenSelected("SettingsScreen") },
             icon = {
                 Column(
@@ -181,6 +216,10 @@ fun BottomBar(onScreenSelected: (String) -> Unit) {
                     Text(text = "Settings")
                 }
             },
+            colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+                selectedIconColor = selectedIconColor,
+                unselectedIconColor = unselectedIconColor
+            )
         )
     }
 }

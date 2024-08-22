@@ -76,7 +76,7 @@ fun NewShowsScreenComponents(
     val sizeBoxHeight = 350.dp
     //
     // FloatingActionButton Ratings
-    val sizeWidth = 45
+    val sizeWidth = 50
     val sizeHeight = 22
     val paddingStart = 8
     val paddingBottom = 8
