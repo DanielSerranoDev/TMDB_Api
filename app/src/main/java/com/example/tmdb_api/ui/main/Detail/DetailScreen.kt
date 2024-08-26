@@ -5,11 +5,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -19,6 +22,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +47,7 @@ import coil.request.ImageRequest
 import com.example.tmdb_api.R
 import com.example.tmdb_api.domain.models.ResponseLocalUI
 import com.example.tmdb_api.domain.models.ResponseRemoteUI
+import com.example.tmdb_api.ui.main.TopBar
 
 @Composable
 fun DetailScreen(
@@ -55,7 +60,16 @@ fun DetailScreen(
         is DetailState.Success -> {
             val responseRepository = (state as DetailState.Success).data
 
-            DetailComponents(responseRepository, detailViewModel)
+            Scaffold(
+                topBar = { TopBar() },
+                content = { paddingValues ->
+                    DetailComponents(
+                        paddingValues,
+                        responseRepository,
+                        detailViewModel
+                    )
+                }
+            )
         }
 
         is DetailState.Error -> {
@@ -69,8 +83,10 @@ fun DetailScreen(
     }
 }
 
+
 @Composable
 fun DetailComponents(
+    paddingValues: PaddingValues,
     responseRepository: ResponseRemoteUI?,
     detailViewModel: DetailViewModel,
 ) {
@@ -79,6 +95,7 @@ fun DetailComponents(
     LaunchedEffect(responseRepository?.id) {
         show = detailViewModel.getShowById(responseRepository?.id.toString())
     }
+
 
     Box(
         modifier =
@@ -91,28 +108,26 @@ fun DetailComponents(
                 Box(
                     modifier =
                     Modifier
-                        .fillParentMaxWidth()
-                        .size(220.dp)
-                        .background(colorResource(id = R.color.black)),
+                        .background(colorResource(id = R.color.backgroundBars))
+                        .height(400.dp)
                 ) {
-                    Text(
-                        text = show?.title ?: "Title",
-                        fontSize = 32.sp,
-                    )
-                    Log.d("show", show?.title.toString())
+
                     Image(
                         painter =
                         rememberAsyncImagePainter(
                             model =
                             ImageRequest
                                 .Builder(LocalContext.current)
-                                .data(responseRepository?.imageSet?.horizontalPoster?.w360)
+                                .data(responseRepository?.imageSet?.horizontalPoster?.w480)
                                 .apply { crossfade(true) }
                                 .build(),
                         ),
                         contentDescription = "show image",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .width(400.dp)
+                            .height(280.dp),
+                        contentScale = ContentScale.FillBounds,
                     )
                 }
             }
@@ -121,7 +136,7 @@ fun DetailComponents(
                     modifier =
                     Modifier
                         .fillParentMaxWidth()
-                        .padding(16.dp, 10.dp),
+                        .padding(1.dp, 5.dp),
                 ) {
                     SmallFloatingActionButton(
                         onClick = { /*TODO*/ },
@@ -139,12 +154,12 @@ fun DetailComponents(
                                     imageVector = Icons.Default.Star,
                                     contentDescription = "rating icon",
                                     tint = Color.Yellow,
-                                    modifier = Modifier.size(36.dp),
+                                    modifier = Modifier.size(32.dp),
                                 )
                                 Text(
                                     text = "${responseRepository?.rating}/100",
                                     color = Color.White,
-                                    fontSize = 16.sp,
+                                    fontSize = 12.sp,
                                 )
                             }
                         }
@@ -186,13 +201,13 @@ fun DetailComponents(
                                         tint = Color.Red,
                                         modifier =
                                         Modifier
-                                            .size(36.dp),
+                                            .size(31.dp),
                                     )
                                 }
                                 Text(
                                     text = "Favorite",
                                     color = Color.White,
-                                    fontSize = 16.sp,
+                                    fontSize = 12.sp,
                                 )
                             }
                         }
@@ -205,16 +220,44 @@ fun DetailComponents(
                     color = Color.White,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp, 10.dp),
+                    modifier = Modifier.padding(16.dp, 0.dp),
                 )
             }
             item {
                 Text(
-                    text = "Release Year: ${responseRepository?.releaseYear}",
+                    text = "Release Year",
                     color = Color.White,
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp, 10.dp),
+                    modifier = Modifier.padding(10.dp, 5.dp)
+                )
+            }
+
+            item() {
+                OutlinedButton(
+                    onClick = { /*TODO*/ },
+                    modifier =
+                    Modifier
+                        .padding(10.dp, 0.dp)
+                        .height(30.dp),
+                ) {
+                    Text(
+                        text = responseRepository?.releaseYear.toString(),
+                        fontSize = 12.sp,
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp),
+                    )
+                }
+            }
+
+
+            item {
+                Text(
+                    text = "Genres",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(10.dp, 5.dp),
                 )
             }
 
@@ -228,14 +271,14 @@ fun DetailComponents(
                             modifier =
                             Modifier
                                 .padding(1.dp)
-                                .height(10.dp),
+                                .height(30.dp),
                         ) {
                             Text(
                                 text = it.name,
                                 fontSize = 12.sp,
                                 modifier = Modifier
                                     .padding(horizontal = 8.dp),
-                                )
+                            )
                         }
                     }
                 }
