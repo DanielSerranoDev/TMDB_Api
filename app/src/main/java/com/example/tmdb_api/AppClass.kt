@@ -5,13 +5,4 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class AppClass : Application() {
-    companion object {
-        // @SuppressLint("StaticFieldLeak")
-        // lateinit var prefRepository: PrefRepository
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        // prefRepository = PrefRepository(applicationContext)
-    }
 }

@@ -2,10 +2,13 @@ package com.example.tmdb_api.ui.main
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -67,32 +70,13 @@ fun MainScreen(
             BottomBar(
                 selectedScreen = selectedScreen,
                 onScreenSelected = { screen -> selectedScreen = screen },
-                selectedIconColor = Color.Black,
+                selectedIconColor = colorResource(id = R.color.logoColor),
                 unselectedIconColor = Color.LightGray
             )
         },
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBar() {
-    TopAppBar(
-        title = {
-            Image(
-                painter = painterResource(id = R.drawable.tmdb),
-                contentDescription = "tmdb logo",
-                modifier = Modifier
-                    .clickable {  }
-                    .size(100.dp, 40.dp)
-            )
-                },
-        colors =
-            TopAppBarDefaults.topAppBarColors(
-                containerColor = colorResource(id = R.color.backgroundBars),
-            ),
-    )
-}
 
 @Composable
 fun Content(
@@ -131,11 +115,15 @@ fun BottomBar(
     selectedScreen: String,
     onScreenSelected: (String) -> Unit,
     selectedIconColor: Color,
-    unselectedIconColor: Color
+    unselectedIconColor: Color,
+    iconSize: Int = 20,
+    fontSize: Int = 14,
 ) {
     BottomAppBar(
         containerColor = colorResource(id = R.color.backgroundBars),
-        contentColor = Color.White,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp),
     ) {
         NavigationBarItem(
             selected = selectedScreen == "HomeScreen",
@@ -148,9 +136,12 @@ fun BottomBar(
                     Icon(
                         imageVector = Icons.Default.Home,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(iconSize.dp),
                     )
-                    Text(text = "Home")
+                    Text(
+                        text = "Home",
+                        fontSize = fontSize.sp 
+                    )
                 }
             },
             colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
@@ -169,9 +160,12 @@ fun BottomBar(
                     Icon(
                         imageVector = Icons.Default.AccessTimeFilled,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(iconSize.dp),
                     )
-                    Text(text = "New")
+                    Text(
+                        text = "New",
+                        fontSize = fontSize.sp 
+                    )
                 }
             },
             colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
@@ -190,9 +184,12 @@ fun BottomBar(
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(iconSize.dp),
                     )
-                    Text(text = "Favorites")
+                    Text(
+                        text = "Favorites",
+                        fontSize = fontSize.sp 
+                    )
                 }
             },
             colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
@@ -211,9 +208,12 @@ fun BottomBar(
                     Icon(
                         imageVector = Icons.Default.Settings,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(iconSize.dp),
                     )
-                    Text(text = "Settings")
+                    Text(
+                        text = "Settings",
+                        fontSize = fontSize.sp 
+                    )
                 }
             },
             colors = androidx.compose.material3.NavigationBarItemDefaults.colors(

@@ -90,7 +90,7 @@ fun HomeScreenComponents(
 
 
     Box(
-        modifier = Modifier.background(colorResource(id = R.color.black))
+        modifier = Modifier.background(colorResource(id = R.color.background))
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             //First item
